@@ -1,4 +1,4 @@
-import { _decorator, Camera, clamp, Component, director, game, instantiate, Label, Layout, math, Node, Prefab, ProgressBar, random, Scene, Script, size, Size, Sprite, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
+import { _decorator, Camera, clamp, Component, director, game, instantiate, Label, Layout, LayoutComponent, math, Node, Prefab, ProgressBar, random, Scene, Script, size, Size, Sprite, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
 import { Fruit } from './Fruit';
 import { FruitCard } from './FruitCard';
 import { FruitCustomer } from './FruitCustomer';
@@ -35,6 +35,7 @@ export class GameManager extends Component {
     public card_grid: Node;
     private spawned_card: number = 0;
     private fruit_cards: Node[] = [];
+    private card_scale: number = 0;
     
     // private can_spawn_seller: boolean = true;
     @property(Node)
@@ -112,9 +113,10 @@ export class GameManager extends Component {
         
         // setup the card grid
         // calculate the final scale of the grid, somehow cannot get the content size after adding cards
-        this.scale_card_grid();
+        this.card_scale = this.scale_card_grid();
         this.card_grid.getComponent(Layout).constraintNum = this.game_mode;
         this.add_card();
+        this.card_grid.getComponent(Layout).startAxis = LayoutComponent.AxisDirection.VERTICAL;
        
         this.select_random_fruit(this.game_mode);
         this.reset_cards();
@@ -135,15 +137,17 @@ export class GameManager extends Component {
     }
 
     // scale the card grid
-    private scale_card_grid(): void {
+    private scale_card_grid(): number {
         // we only care about the horizontal size
         let spacing_x: number = this.card_grid.getComponent(Layout).spacingX;
         let card_size_x: number = 32 + spacing_x;
         let total_card_size_x: number = card_size_x * this.game_mode;
         let new_scale: number = 360 / total_card_size_x;
 
-        this.card_grid.scale = new Vec3(new_scale, new_scale, new_scale);
+        // this.card_grid.scale = new Vec3(new_scale, new_scale, new_scale);
+        return new_scale;
     }
+
 
     // select random number of fruit for each round
     public select_random_fruit(how_many_type: number): void {
@@ -180,6 +184,8 @@ export class GameManager extends Component {
            
             // set the game manger on the fruit card
             new_fruit_card.getComponent(FruitCard).game_manager = this.node;
+
+            new_fruit_card.scale = new Vec3(this.card_scale, this.card_scale, this.card_scale);
 
             // add to card grid
             this.card_grid.addChild(new_fruit_card);
