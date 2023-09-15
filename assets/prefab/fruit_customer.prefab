@@ -39,7 +39,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -306.5,
+      "y": 0,
       "z": 0
     },
     "_lrot": {
@@ -55,7 +55,7 @@
       "y": 1,
       "z": 1
     },
-    "_mobility": 1,
+    "_mobility": 0,
     "_layer": 33554432,
     "_euler": {
       "__type__": "cc.Vec3",
@@ -101,7 +101,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 30,
+      "y": 0,
       "z": 0
     },
     "_lrot": {
@@ -1265,7 +1265,7 @@
     "_horizontalDirection": 0,
     "_constraint": 0,
     "_constraintNum": 2,
-    "_affectedByScale": false,
+    "_affectedByScale": true,
     "_isAlign": true,
     "_id": ""
   },

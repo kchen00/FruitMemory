@@ -232,12 +232,12 @@ export class FruitCustomer extends Component {
                 this.game_manager.getComponent(GameManager).decrease_player_reputation(10);
                 this.reset_customer();
                 break;
-            
+        
             // reward player, then reset the cutomerm then reset the fruit available next round
             case customer_state.ORDER_FULLFILLED:
                 this.reward_player(true);
                 this.reset_customer();
-                this.game_manager.getComponent(GameManager).select_random_fruit(4);
+                this.game_manager.getComponent(GameManager).select_random_fruit(this.game_manager.getComponent(GameManager).game_mode);
                 break;
 
         }

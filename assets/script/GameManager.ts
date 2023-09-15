@@ -1,4 +1,4 @@
-import { _decorator, Camera, clamp, Component, director, game, instantiate, Label, Layout, math, Node, Prefab, ProgressBar, random, Scene, Script, Size, Sprite, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
+import { _decorator, Camera, clamp, Component, director, game, instantiate, Label, Layout, LayoutComponent, math, Node, Prefab, ProgressBar, random, Scene, Script, size, Size, Sprite, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
 import { Fruit } from './Fruit';
 import { FruitCard } from './FruitCard';
 import { FruitCustomer } from './FruitCustomer';
@@ -35,6 +35,7 @@ export class GameManager extends Component {
     public card_grid: Node;
     private spawned_card: number = 0;
     private fruit_cards: Node[] = [];
+    private card_scale: number = 0;
     
     // private can_spawn_seller: boolean = true;
     @property(Node)
@@ -104,21 +105,26 @@ export class GameManager extends Component {
     
     private previous_selected_card: Node;
     private selected_card: Node;
-    
-    private card_scale: number;
+
     start() {
         this.update_score_label();
         this.update_player_level_label();
         this.update_reputation_bar();
         
-        this.scale_card_grid();
+        // setup the card grid
+        // calculate the final scale of the grid, somehow cannot get the content size after adding cards
+        this.card_scale = this.scale_card_grid();
         this.card_grid.getComponent(Layout).constraintNum = this.game_mode;
         this.add_card();
+        //somehow need to reset the axis direction or else the card positioning will be incorect
+        this.card_grid.getComponent(Layout).startAxis = LayoutComponent.AxisDirection.VERTICAL;
+        this.card_grid.getComponent(Layout).startAxis = LayoutComponent.AxisDirection.HORIZONTAL;
        
         this.select_random_fruit(this.game_mode);
         this.reset_cards();
         this.update_score_label();
         
+        // setup the fruit customer
         this.customer_node.getComponent(FruitCustomer).set_available_fruit(this.fruit_available);
         this.customer_node.getComponent(FruitCustomer).game_manager = this.node;
     }
@@ -133,24 +139,17 @@ export class GameManager extends Component {
     }
 
     // scale the card grid
-    private scale_card_grid(): void {
-        let padding_left: number = this.card_grid.getComponent(Layout).paddingLeft;
-        let padding_right: number = this.card_grid.getComponent(Layout).paddingRight;
-        let padding_top: number = this.card_grid.getComponent(Layout).paddingTop;
-        let padding_bottom: number = this.card_grid.getComponent(Layout).paddingBottom;
-        let spacing_x: number = this.card_grid.getComponent(Layout).spacingX /2;
-        let spacing_y: number = this.card_grid.getComponent(Layout).spacingY /2;
+    private scale_card_grid(): number {
+        // we only care about the horizontal size
+        let spacing_x: number = this.card_grid.getComponent(Layout).spacingX;
         let card_size_x: number = 32 + spacing_x;
-        let card_size_y: number = 32 + spacing_y;
         let total_card_size_x: number = card_size_x * this.game_mode;
-        let total_card_size_y: number = card_size_y * this.game_mode;
-        let card_grid_size_x: number = total_card_size_x + padding_left + padding_right;
-        let card_grid_size_y: number = total_card_size_y + padding_top + padding_bottom;
+        let new_scale: number = 360 / total_card_size_x;
 
-        this.card_grid.getComponent(UITransform).contentSize = new Size(card_grid_size_x, card_grid_size_y);
-        let new_scale: number = Math.floor(360 / total_card_size_x);
-        this.card_grid.scale = new Vec3(new_scale, new_scale, new_scale);
+        // this.card_grid.scale = new Vec3(new_scale, new_scale, new_scale);
+        return new_scale;
     }
+
 
     // select random number of fruit for each round
     public select_random_fruit(how_many_type: number): void {
@@ -187,6 +186,8 @@ export class GameManager extends Component {
            
             // set the game manger on the fruit card
             new_fruit_card.getComponent(FruitCard).game_manager = this.node;
+
+            new_fruit_card.scale = new Vec3(this.card_scale, this.card_scale, this.card_scale);
 
             // add to card grid
             this.card_grid.addChild(new_fruit_card);
