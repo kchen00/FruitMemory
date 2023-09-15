@@ -10,7 +10,7 @@ export class CameraController extends Component {
 
     start() {
         this.initial_position = this.node.getWorldPosition();
-        console.log(this.initial_position);
+        // console.log(this.initial_position);
 
     }
 

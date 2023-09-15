@@ -1,4 +1,4 @@
-import { _decorator, Camera, clamp, Component, director, game, instantiate, Label, Layout, math, Node, Prefab, ProgressBar, random, Scene, Script, Size, Sprite, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
+import { _decorator, Camera, clamp, Component, director, game, instantiate, Label, Layout, math, Node, Prefab, ProgressBar, random, Scene, Script, size, Size, Sprite, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
 import { Fruit } from './Fruit';
 import { FruitCard } from './FruitCard';
 import { FruitCustomer } from './FruitCustomer';
@@ -111,6 +111,7 @@ export class GameManager extends Component {
         this.update_reputation_bar();
         
         // setup the card grid
+        // calculate the final scale of the grid, somehow cannot get the content size after adding cards
         this.scale_card_grid();
         this.card_grid.getComponent(Layout).constraintNum = this.game_mode;
         this.add_card();
@@ -135,21 +136,12 @@ export class GameManager extends Component {
 
     // scale the card grid
     private scale_card_grid(): void {
-        let padding_left: number = this.card_grid.getComponent(Layout).paddingLeft;
-        let padding_right: number = this.card_grid.getComponent(Layout).paddingRight;
-        let padding_top: number = this.card_grid.getComponent(Layout).paddingTop;
-        let padding_bottom: number = this.card_grid.getComponent(Layout).paddingBottom;
-        let spacing_x: number = this.card_grid.getComponent(Layout).spacingX /2;
-        let spacing_y: number = this.card_grid.getComponent(Layout).spacingY /2;
+        // we only care about the horizontal size
+        let spacing_x: number = this.card_grid.getComponent(Layout).spacingX;
         let card_size_x: number = 32 + spacing_x;
-        let card_size_y: number = 32 + spacing_y;
         let total_card_size_x: number = card_size_x * this.game_mode;
-        let total_card_size_y: number = card_size_y * this.game_mode;
-        let card_grid_size_x: number = total_card_size_x + padding_left + padding_right;
-        let card_grid_size_y: number = total_card_size_y + padding_top + padding_bottom;
+        let new_scale: number = 360 / total_card_size_x;
 
-        this.card_grid.getComponent(UITransform).contentSize = new Size(card_grid_size_x, card_grid_size_y);
-        let new_scale: number = Math.floor(360 / total_card_size_x);
         this.card_grid.scale = new Vec3(new_scale, new_scale, new_scale);
     }
 
