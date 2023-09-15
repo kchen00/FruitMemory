@@ -22,26 +22,29 @@ export class FruitCustomer extends Component {
 
     // available fruit that this seller can order
     private available_fruit: Fruit[] = [];
+    // customer aggresiveness, mofidy customer behaviour, 50% chance of increase for each sucessful order
+    private customer_aggresiveness: number = 1;
     
+    //default values for customer behaviours
     @property(Number)
-    public order_rate: number = 0.5
-    // min and max demand
+    public initial_order_rate: number = 0.5;
     @property(Number)
-    public min_demand: number = 10;
+    public initial_min_demand: number = 1;
     @property(Number)
-    public max_demand: number = 50;
+    public initial_max_demand: number = 10;
+    @property(Number)
+    public initial_max_wait_time: number = 60;
+
+    private order_rate: number = 0.5
+    private min_demand: number = 10;
+    private max_demand: number = 50;
     private total_demand: number = 0
 
-    @property(Number)
-    public initial_patience: number = 10;
-    @property(Number)
-    public max_wait_time: number = 20;
-    private patience_remaining: number = this.initial_patience;
-    private patience_reduce_rate: number = this.initial_patience / this.max_wait_time;
+    private max_wait_time: number = 20;
+    private elaspsed_patience: number = 0;
 
     @property(Node)
     public fruit_order_ui: Node[] = [];
-
 
     public can_order: boolean = false;
     private order_delay: number = 5;
@@ -54,11 +57,15 @@ export class FruitCustomer extends Component {
     public customer_temper_bar: ProgressBar;
     @property(Label)
     public customer_patience_countdown: Label;
+
     
 
     start() {
+        this.order_rate = this.initial_order_rate;
+        this.min_demand = this.initial_min_demand;
+        this.max_demand = this.initial_max_demand;
+        this.max_wait_time = this.initial_max_wait_time;
         this.reset_customer(false);
-        console.log(this.max_wait_time)
     }
 
     // set random amount to get from each fruit
@@ -74,6 +81,7 @@ export class FruitCustomer extends Component {
                 let new_order: CustomerOrder = new CustomerOrder(choosen_fruit_to_order[i], random_order_amount);
                 this.total_demand += random_order_amount;
                 this.fruit_order.push(new_order);
+                console.log(new_order);
             }
 
             this.can_order = false;
@@ -83,11 +91,17 @@ export class FruitCustomer extends Component {
     // setting up the fruit order UI
     private setup_fruit_order_ui(): void {
         for (let i = 0; i < this.fruit_order_ui.length; i++) {
-            let order_to_monitor: CustomerOrder = this.fruit_order[i];
-            if (order_to_monitor) {
-                let ui_to_use: FruitOrderUI = this.fruit_order_ui[i].getComponent(FruitOrderUI);
-                ui_to_use.set_animation(order_to_monitor.fruit_type.fruit_name);
+            this.fruit_order_ui[i].active = true;
+            if (i < this.fruit_order.length) {
+                let order_to_monitor: CustomerOrder = this.fruit_order[i];
+                if (order_to_monitor) {
+                    let ui_to_use: FruitOrderUI = this.fruit_order_ui[i].getComponent(FruitOrderUI);
+                    ui_to_use.set_animation(order_to_monitor.fruit_type.fruit_name);
+                }    
+            } else {
+                this.fruit_order_ui[i].active = false;
             }
+            
         }
     }
 
@@ -125,14 +139,14 @@ export class FruitCustomer extends Component {
 
     // update the temper bar of the customer
     private update_patience_bar(): void {
-        let new_progress: number = (this.patience_remaining/this.initial_patience);
+        let new_progress: number = 1 - (this.elaspsed_patience/this.max_wait_time);
         // console.log("patience bar current progress: " + new_progress);
         this.customer_temper_bar.progress = new_progress;
     }
 
     // update the customer temper label countdown
     private update_customer_patience_countdown(): void {
-        this.customer_patience_countdown.string = Math.round(this.patience_remaining).toString();
+        this.customer_patience_countdown.string = Math.round(this.customer_temper_bar.progress * this.max_wait_time).toString() + "s";
     }
 
     // reset customer
@@ -143,7 +157,7 @@ export class FruitCustomer extends Component {
         this.node.getComponent(UIOpacity).opacity = 0;
         this.fruit_order = [];
         this.total_demand = 0;
-        this.patience_remaining = this.initial_patience;
+        this.elaspsed_patience = 0;
         this.can_order = false
         this.update_patience_bar();
         this.order_delay_timer = 0;
@@ -165,8 +179,16 @@ export class FruitCustomer extends Component {
     // receive fruit available from game manager and shuffle the list
     public set_available_fruit(available_f: Fruit[]): void {
         console.log("receiving available fruit from game manager");
-        console.log(available_f);
         this.available_fruit = available_f.slice();
+    }
+
+    // allow behavior modification to suit the difficulty
+    // using a*e^kt function to determine the increment
+    public modify_behavior(): void {
+        console.log("customer behavior updated, customer aggresiveness is now " + this.customer_aggresiveness);
+        this.min_demand = Math.round(this.initial_min_demand * Math.pow(Math.E, 0.1 * this.customer_aggresiveness));
+        this.max_demand = Math.round(this.initial_max_demand * Math.pow(Math.E, 0.1 * this.customer_aggresiveness));
+        this.max_wait_time = Math.round(this.initial_max_wait_time * Math.pow(Math.E, -0.8 * this.customer_aggresiveness));
     }
 
     update(deltaTime: number) {
@@ -195,7 +217,7 @@ export class FruitCustomer extends Component {
             // clear the previous order and create a new order
             case customer_state.MAKE_ORDER:
                 this.fruit_order = [];
-                this.order_fruit(4);
+                this.order_fruit(this.game_manager.getComponent(GameManager).game_mode);
                 this.node.getComponent(UIOpacity).opacity = 255;
                 this.setup_fruit_order_ui();
                 this.can_order = false;
@@ -211,10 +233,10 @@ export class FruitCustomer extends Component {
                 this.take_stock_from_player();
                 this.update_customer_patience_countdown();
                 if (this.total_demand > 0) {
-                    this.patience_remaining -= (this.patience_reduce_rate/this.max_wait_time) * deltaTime;
+                    this.elaspsed_patience += deltaTime;
                     this.update_patience_bar();
                     this.update_fruit_order_UI();
-                    if (this.patience_remaining <= 0) {
+                    if (this.elaspsed_patience >= this.max_wait_time) {
                         console.log(this.name + " loses all his patience, he left you");
                         this.current_state = customer_state.CANCEL_ORDER;
 
@@ -238,6 +260,10 @@ export class FruitCustomer extends Component {
                 this.reward_player(true);
                 this.reset_customer();
                 this.game_manager.getComponent(GameManager).select_random_fruit(this.game_manager.getComponent(GameManager).game_mode);
+                if (Math.random() > 0.5) {
+                    this.customer_aggresiveness += 0.1;
+                    this.modify_behavior();
+                }
                 break;
 
         }

@@ -7,14 +7,14 @@ export class Fruit extends Component {
     // name of the fruit
     public fruit_name: string;
     // how much it contribute to the stock
-    public fruit_value: number;
+    public fruit_value: number = 1;
     public fruit_stock: number = 0;
 
 
     constructor(f_name: string, f_value: number) {
         super();
         this.fruit_name = f_name;
-        this.fruit_value = f_value;
+        // this.fruit_value = f_value;
     }
 
     // add stock when player sucessfully match 2 cards

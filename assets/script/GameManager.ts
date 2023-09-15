@@ -3,6 +3,7 @@ import { Fruit } from './Fruit';
 import { FruitCard } from './FruitCard';
 import { FruitCustomer } from './FruitCustomer';
 import { CameraController } from './CameraController';
+
 const { ccclass, property } = _decorator;
 
 enum game_state {
@@ -22,7 +23,6 @@ export class GameManager extends Component {
     
     private current_game_state: game_state = game_state.SHOW_PLAYER_CARD;
 
-
     @property(Number)
     public card_show_time: number = 30;
     private show_card_elasped_time: number = 0;
@@ -36,6 +36,7 @@ export class GameManager extends Component {
     private spawned_card: number = 0;
     private fruit_cards: Node[] = [];
     private card_scale: number = 0;
+    private card_cleared: number = 0;
     
     // private can_spawn_seller: boolean = true;
     @property(Node)
@@ -105,19 +106,15 @@ export class GameManager extends Component {
     
     private previous_selected_card: Node;
     private selected_card: Node;
+    
+
 
     start() {
         this.update_score_label();
         this.update_player_level_label();
         this.update_reputation_bar();
         
-        // setup the card grid
-        // calculate the final scale of the grid, somehow cannot get the content size after adding cards
-        this.card_scale = this.scale_card_grid();
-        this.card_grid.getComponent(Layout).constraintNum = this.game_mode;
         this.add_card();
-        //somehow need to reset the axis direction or else the card positioning will be incorect
-        this.card_grid.getComponent(Layout).startAxis = LayoutComponent.AxisDirection.VERTICAL;
        
         this.select_random_fruit(this.game_mode);
         this.reset_cards();
@@ -138,7 +135,7 @@ export class GameManager extends Component {
     }
 
     // scale the card grid
-    private scale_card_grid(): number {
+    private calculate_card_scale(): number {
         // we only care about the horizontal size
         let spacing_x: number = this.card_grid.getComponent(Layout).spacingX;
         let card_size_x: number = 32 + spacing_x;
@@ -179,6 +176,10 @@ export class GameManager extends Component {
    
     // spawn card into card grid
     private add_card(): void {
+        // setup the card grid
+        // calculate the final scale of the grid, somehow cannot get the content size after adding cards
+        this.card_scale = this.calculate_card_scale();
+        this.card_grid.getComponent(Layout).constraintNum = this.game_mode;
         for (let i = 0; i < Math.pow(this.game_mode, 2); i++) {
             // instantiate a new card
             let new_fruit_card: Node = instantiate(this.fruit_card_prefab);
@@ -194,6 +195,9 @@ export class GameManager extends Component {
             this.fruit_cards.push(new_fruit_card);
             this.spawned_card += 1
         }
+
+        //somehow need to reset the axis direction or else the card positioning will be incorect
+        this.card_grid.getComponent(Layout).startAxis = LayoutComponent.AxisDirection.VERTICAL;
     }
 
     // set the selected fruit card and compare with the previous selected one
@@ -231,6 +235,7 @@ export class GameManager extends Component {
                         
                         // remove 2 card
                         this.spawned_card -= 2;
+                        this.card_cleared += 2;
                         this.increase_player_score(selected_card_assigned_fruit.fruit_value*perfect_fruit);
 
                         // reset the card when all the cards are matched
@@ -363,6 +368,18 @@ export class GameManager extends Component {
             
             // when all the cards are matched, reset the cards
             case game_state.RESET_CARDS:
+                if (this.card_cleared > 50) {
+                    console.log("50 cards cleared, increasing the size of grid");
+                    this.game_mode += 2;
+                    this.game_mode = clamp(this.game_mode, 2, 6);
+                    this.fruit_cards = [];
+                    this.card_grid.destroyAllChildren();
+                    this.add_card();
+                    this.card_cleared = 0;
+
+                    this.select_random_fruit(this.game_mode);
+                }
+                
                 console.log("all cards has been matched, resetting the card");
                 this.reset_cards();
                 console.log("resetting done, showing player card");
