@@ -104,13 +104,13 @@ export class GameManager extends Component {
     
     private previous_selected_card: Node;
     private selected_card: Node;
-    
-    private card_scale: number;
+
     start() {
         this.update_score_label();
         this.update_player_level_label();
         this.update_reputation_bar();
         
+        // setup the card grid
         this.scale_card_grid();
         this.card_grid.getComponent(Layout).constraintNum = this.game_mode;
         this.add_card();
@@ -119,6 +119,7 @@ export class GameManager extends Component {
         this.reset_cards();
         this.update_score_label();
         
+        // setup the fruit customer
         this.customer_node.getComponent(FruitCustomer).set_available_fruit(this.fruit_available);
         this.customer_node.getComponent(FruitCustomer).game_manager = this.node;
     }
