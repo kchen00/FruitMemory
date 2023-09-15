@@ -297,7 +297,7 @@
     },
     "_enabled": true,
     "__prefab": null,
-    "game_mode": 6,
+    "game_mode": 4,
     "card_show_time": 10,
     "fruit_card_prefab": {
       "__uuid__": "f1a2101a-cc6a-4d9d-b841-a7aaf1b0f159",
