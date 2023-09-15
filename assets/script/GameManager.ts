@@ -116,7 +116,9 @@ export class GameManager extends Component {
         this.card_scale = this.scale_card_grid();
         this.card_grid.getComponent(Layout).constraintNum = this.game_mode;
         this.add_card();
+        //somehow need to reset the axis direction or else the card positioning will be incorect
         this.card_grid.getComponent(Layout).startAxis = LayoutComponent.AxisDirection.VERTICAL;
+        this.card_grid.getComponent(Layout).startAxis = LayoutComponent.AxisDirection.HORIZONTAL;
        
         this.select_random_fruit(this.game_mode);
         this.reset_cards();
