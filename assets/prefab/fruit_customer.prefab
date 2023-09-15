@@ -1516,11 +1516,10 @@
     "__prefab": {
       "__id__": 97
     },
-    "order_rate": 0.5,
-    "min_demand": 30,
-    "max_demand": 50,
-    "initial_patience": 20,
-    "max_wait_time": 5,
+    "initial_order_rate": 0.5,
+    "initial_min_demand": 1,
+    "initial_max_demand": 10,
+    "initial_max_wait_time": 60,
     "fruit_order_ui": [
       {
         "__id__": 17

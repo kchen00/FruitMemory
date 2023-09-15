@@ -3,6 +3,7 @@ import { Fruit } from './Fruit';
 import { FruitCard } from './FruitCard';
 import { FruitCustomer } from './FruitCustomer';
 import { CameraController } from './CameraController';
+
 const { ccclass, property } = _decorator;
 
 enum game_state {
@@ -21,7 +22,6 @@ export class GameManager extends Component {
     public game_mode: number = 4; 
     
     private current_game_state: game_state = game_state.SHOW_PLAYER_CARD;
-
 
     @property(Number)
     public card_show_time: number = 30;
@@ -105,6 +105,8 @@ export class GameManager extends Component {
     
     private previous_selected_card: Node;
     private selected_card: Node;
+    
+
 
     start() {
         this.update_score_label();
