@@ -1,4 +1,4 @@
-import { _decorator, AnimationComponent, Component, Label, Node, Sprite, SpriteFrame } from 'cc';
+import { _decorator, animation, AnimationComponent, Component, Label, Node, Sprite, SpriteFrame } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('FruitOrderUI')
@@ -46,19 +46,27 @@ export class FruitOrderUI extends Component {
         for (let i = 0; i < this.idle_animation_list.length; i++) {
             if (this.idle_animation_list[i].includes(fruit_name)) {
                 this.idle_anim = this.idle_animation_list[i];
+                this.fruit_sprite_animation_component.play(this.idle_anim);
+                this.animation_playing = true;
                 break;
             }
         }
+
         
-        if (this.animation_playing == false) {
-            this.fruit_sprite_animation_component.play(this.idle_anim);
-            this.animation_playing = true;
-        }
         
     }
-
+    
     update(deltaTimer: number): void {
-
+        if (this.animation_playing == false && Math.random() > 0.5) {
+            this.fruit_sprite_animation_component.play(this.idle_anim);
+            this.animation_playing = true;
+        } else {
+            if(Math.random() > 0.99) {
+                this.fruit_sprite_animation_component.stop();
+                this.animation_playing = false;
+            }
+        }
+        
     }
 }
 
