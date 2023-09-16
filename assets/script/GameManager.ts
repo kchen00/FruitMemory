@@ -168,6 +168,7 @@ export class GameManager extends Component {
                 // reset the rot rate
                 this.fruit_cards[i].getComponent(FruitCard).set_assigned_fruit(this.selected_fruit_for_this_round[i%this.game_mode]);
                 this.fruit_cards[i].getComponent(FruitCard).get_sprite_frame();
+                this.fruit_cards[i].getComponent(FruitCard).get_animation_clip();
                 this.fruit_cards[i].getComponent(FruitCard).reset_card();
             }
 

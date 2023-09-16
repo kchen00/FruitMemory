@@ -1,4 +1,4 @@
-import { _decorator, AnimationComponent, Color, Component, Game, Label, Layout, MotionStreak, Node, ParticleSystem2D, size, Size, Sprite, SpriteFrame, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
+import { _decorator, animation, AnimationClip, AnimationComponent, Color, Component, Game, Label, Layout, MotionStreak, Node, ParticleSystem2D, size, Size, Sprite, SpriteFrame, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
 import { Fruit } from './Fruit';
 import { GameManager } from './GameManager';
 const { ccclass, property } = _decorator;
@@ -23,21 +23,46 @@ export class FruitCard extends Component {
     @property(SpriteFrame)
     public question_mark_frame: SpriteFrame;
     private choosen_frame: SpriteFrame;
+    private animation_clip: string[] = [
+        "apple_idle",
+        "orange_idle",
+        "lemon_idle",
+        "pear_idle",
+        "strawberry_idle",
+        "watermelon_idle"
+    ]
+    private choosen_animation_clip: string;
+    private animation_playing: boolean = false;
+    private animation_component: AnimationComponent;
 
     private rotting_rate: number = 0;
     public is_rotten: boolean = false;
 
+    private is_hidden: boolean = false;
+
     start() {
         console.log("received fruit:  " + this.assigned_fruit.fruit_name);
     }
-
+    
+    // get the coressponding idle animation
+    public get_animation_clip(): void{
+        this.animation_component = this.fruit_sprite.getComponent(AnimationComponent);
+        for (let i = 0; i < this.animation_clip.length; i++) {
+            if(this.animation_clip[i].includes(this.assigned_fruit.fruit_name)){
+                this.choosen_animation_clip = this.animation_clip[i];
+                this.animation_component.play(this.choosen_animation_clip);
+                return;
+            }
+        }
+    }
 
     //  get the coressponding fruit sprite based on the fruit type
-    public get_sprite_frame(): void {
+    public get_sprite_frame(): void {        
         for (let i = 0; i < this.sprite_frames.length; i++) {
             if (this.sprite_frames[i].name.includes(this.assigned_fruit.fruit_name)){
                 this.choosen_frame = this.sprite_frames[i];
                 this.fruit_sprite.getComponent(Sprite).spriteFrame = this.sprite_frames[i];
+                return;
             }
         }
     }
@@ -65,11 +90,14 @@ export class FruitCard extends Component {
 
     // hide the card when game start or does not match sucessfully
     public hide_card(): void {
+        this.is_hidden = true;
+        this.animation_component.stop();
         this.fruit_sprite.getComponent(Sprite).spriteFrame = this.question_mark_frame;
     }
 
     // show the card after being touched
     public show_card(): void {
+        this.is_hidden = false
         this.node.getComponent(UIOpacity).opacity = 255;
         this.fruit_sprite.getComponent(Sprite).spriteFrame = this.choosen_frame;
     }
@@ -100,6 +128,20 @@ export class FruitCard extends Component {
     update(deltaTime: number) {
         if (this.monitor_touch) {
             this.node.on(Node.EventType.TOUCH_START, this.touch_card, this);
+        }
+
+        // play idle animation sometimes
+        if (this.is_hidden == false) {
+            if(this.animation_playing == false && Math.random() > 0.5){
+                this.animation_component.play(this.choosen_animation_clip);
+                this.animation_playing = true;
+            } else {
+                if(Math.random() > 0.98) {
+                    this.animation_component.stop();
+                    this.animation_playing = false;
+                }
+            }
+
         }
     }
 
