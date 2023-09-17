@@ -345,7 +345,6 @@ export class GameManager extends Component {
     }
 
     update(deltaTime: number) {
-        this.increase_player_reputation(1);
         switch(this.current_game_state) {
             // countdown to hide card, let player memorize the cards
             case game_state.SHOW_PLAYER_CARD:
