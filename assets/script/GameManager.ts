@@ -1,4 +1,4 @@
-import { _decorator, Camera, clamp, Component, director, game, instantiate, Label, Layout, LayoutComponent, math, Node, Prefab, ProgressBar, random, Scene, Script, size, Size, Sprite, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
+import { _decorator, Camera, clamp, Component, director, game, instantiate, Label, Layout, LayoutComponent, math, Node, ParticleSystem2D, Prefab, ProgressBar, random, Scene, Script, size, Size, Sprite, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
 import { Fruit } from './Fruit';
 import { FruitCard } from './FruitCard';
 import { FruitCustomer } from './FruitCustomer';
@@ -83,6 +83,9 @@ export class GameManager extends Component {
 
     @property(Node)
     public camera_node: Node;
+
+    @property(Node)
+    public level_up_confetti: Node;
 
     // fruits in game
     private apple: Fruit = new Fruit("apple", 4);
@@ -325,6 +328,7 @@ export class GameManager extends Component {
         // wrapped progress
         if (this.player_reputation >= this.level_max_reputation * this.player_level) {
             this.player_level += 1
+            this.level_up_confetti.getComponent(ParticleSystem2D).resetSystem();
         }
         this.update_reputation_bar();
     }
@@ -341,6 +345,7 @@ export class GameManager extends Component {
     }
 
     update(deltaTime: number) {
+        this.increase_player_reputation(1);
         switch(this.current_game_state) {
             // countdown to hide card, let player memorize the cards
             case game_state.SHOW_PLAYER_CARD:

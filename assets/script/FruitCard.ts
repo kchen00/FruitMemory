@@ -40,6 +40,11 @@ export class FruitCard extends Component {
 
     private is_hidden: boolean = false;
 
+    @property(Node)
+    public rotten_particles: Node;
+    @property(Node)
+    public burst_particle: Node;
+
     start() {
         console.log("received fruit:  " + this.assigned_fruit.fruit_name);
     }
@@ -84,7 +89,8 @@ export class FruitCard extends Component {
 
     //hide the node after successful match
     public hide_after_sucessful(): void {
-        this.node.getComponent(UIOpacity).opacity = 0;
+        this.burst_particle.getComponent(ParticleSystem2D).resetSystem();
+        // this.node.getComponent(UIOpacity).opacity = 0;
         this.monitor_touch = false;
     }
 
@@ -116,6 +122,7 @@ export class FruitCard extends Component {
             console.log("oh no the fruit is rotten");
             this.is_rotten = true
             this.node.getComponent(Sprite).color = new Color(176, 117, 0, 255)
+            this.rotten_particles.getComponent(ParticleSystem2D).resetSystem();
         }
     }
 
@@ -123,6 +130,7 @@ export class FruitCard extends Component {
         this.rotting_rate = 0;
         this.is_rotten = false;
         this.node.getComponent(Sprite).color = new Color(255, 255, 255, 255)
+        this.rotten_particles.getComponent(ParticleSystem2D).stopSystem();
     }
 
     update(deltaTime: number) {
