@@ -304,6 +304,7 @@ export class GameManager extends Component {
 
     // hide all the cards
     private hide_all_card(): void {
+        this.show_card_elasped_time = this.card_show_time;
         this.fruit_cards.forEach(card => {
             card.getComponent(FruitCard).start_game();
         });
