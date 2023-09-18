@@ -570,7 +570,15 @@
       }
     ],
     "question_mark_frame": {
-      "__uuid__": "ee435958-564b-47c6-981d-17039b1dd824@f9941",
+      "__uuid__": "0a4a51c0-b55a-4be9-ad9d-22b538b3e1ec@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "card_background_hidden": {
+      "__uuid__": "f276aac7-592c-4785-a7db-5fcc2c7efd87@f9941",
+      "__expectedType__": "cc.SpriteFrame"
+    },
+    "card_background_choosen": {
+      "__uuid__": "ef63c315-2e5e-4b7b-88db-928d49af3bd0@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "rotten_particles": {
@@ -607,7 +615,7 @@
       "a": 255
     },
     "_spriteFrame": {
-      "__uuid__": "ef63c315-2e5e-4b7b-88db-928d49af3bd0@f9941",
+      "__uuid__": "f276aac7-592c-4785-a7db-5fcc2c7efd87@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_type": 0,
