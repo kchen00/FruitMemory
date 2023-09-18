@@ -351,11 +351,12 @@ export class GameManager extends Component {
                 console.log("showing player cards");
                 this.show_all_cards();
                 this.show_card_elasped_time += deltaTime;
-                this.show_card_time_left_label.string = (Math.round(this.card_show_time - this.show_card_elasped_time)).toString();
+                this.show_card_time_left_label.string = (Math.round(this.card_show_time - this.show_card_elasped_time)).toString() + "s";
                 if(this.show_card_elasped_time >= this.card_show_time) {
                     console.log("times up, hiding all cards");
                     this.current_game_state = game_state.HIDE_CARDS;
                 }
+                this.customer_node.getComponent(FruitCustomer).pause_countdown = true;
                 break;
                     
             // hide all the game and let player start mactching
@@ -363,6 +364,7 @@ export class GameManager extends Component {
                 this.hide_all_card();
                 this.customer_node.getComponent(FruitCustomer).can_order = true;
                 this.customer_node.getComponent(FruitCustomer).set_available_fruit(this.selected_fruit_for_this_round);
+                this.customer_node.getComponent(FruitCustomer).pause_countdown = false;
                 this.current_game_state = game_state.START_MATCHING;
                 break;
 

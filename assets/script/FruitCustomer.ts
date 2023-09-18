@@ -1,4 +1,4 @@
-import { _decorator, Component, Label, math, Node, ProgressBar, random, Sprite, UIOpacity } from 'cc';
+import { _decorator, clamp, Component, Label, math, Node, ProgressBar, random, Sprite, UIOpacity } from 'cc';
 import { Fruit } from './Fruit';
 import { CustomerOrder } from './CustomerOrder';
 import { GameManager } from './GameManager';
@@ -33,15 +33,16 @@ export class FruitCustomer extends Component {
     @property(Number)
     public initial_max_demand: number = 10;
     @property(Number)
-    public initial_max_wait_time: number = 60;
+    public initial_max_wait_time: number = 360;
 
     private order_rate: number = 0.5
     private min_demand: number = 10;
     private max_demand: number = 50;
-    private total_demand: number = 0
+    private total_demand: number = 0;
 
     private max_wait_time: number = 20;
     private elaspsed_patience: number = 0;
+    public pause_countdown: boolean = false;
 
     @property(Node)
     public fruit_order_ui: Node[] = [];
@@ -81,7 +82,6 @@ export class FruitCustomer extends Component {
                 let new_order: CustomerOrder = new CustomerOrder(choosen_fruit_to_order[i], random_order_amount);
                 this.total_demand += random_order_amount;
                 this.fruit_order.push(new_order);
-                console.log(new_order);
             }
 
             this.can_order = false;
@@ -169,11 +169,35 @@ export class FruitCustomer extends Component {
     }
 
     //reward player when demand is fullfilled
-    private reward_player(increase_reputation: boolean): void {
-        this.game_manager.getComponent(GameManager).increase_player_score(10);
-        if (increase_reputation) {
-            this.game_manager.getComponent(GameManager).increase_player_reputation(10);
+    private reward_player(): void {
+        // calculate the percentage of time taken
+        // 1/6, 3x reward
+        // 2/6, 2x reward
+        // 3/6, 1x reward
+        // 4/6, -1x reputation
+        // 5/6, -2x reputation
+        // >= 6/6, -3x reputation
+        let percentage_time_taken: number = this.elaspsed_patience/this.max_wait_time;
+        let time_taken_portion: number = Math.floor(percentage_time_taken * 6);
+        if(time_taken_portion <= 3) {
+            // posibly value of zero, clamp the value
+            time_taken_portion = clamp(time_taken_portion, 1, 3);
+            // convert the number to the right one
+            //1 -> 3, 2 -> 2, 3 -> 1
+            time_taken_portion = 4 - time_taken_portion;
+            console.log("you got " + time_taken_portion + "x of score and reputation!");
+            this.game_manager.getComponent(GameManager).increase_player_reputation(10*time_taken_portion);
+            this.game_manager.getComponent(GameManager).increase_player_score(10*time_taken_portion);
+        } else {
+            // possibly more than 6, clamp the value
+            time_taken_portion = clamp(time_taken_portion, 4, 6);
+            // convert the number to the right one
+            // 4 -> 1, 5 -> 2, 6 -> 3
+            time_taken_portion -= 3;
+            console.log("you got -" + time_taken_portion + "x of score and reputation!");
+            this.game_manager.getComponent(GameManager).decrease_player_reputation(10*time_taken_portion);
         }
+
     }
 
     // receive fruit available from game manager and shuffle the list
@@ -233,7 +257,10 @@ export class FruitCustomer extends Component {
                 this.take_stock_from_player();
                 this.update_customer_patience_countdown();
                 if (this.total_demand > 0) {
-                    this.elaspsed_patience += deltaTime;
+                    if (this.pause_countdown == false) {
+                        this.elaspsed_patience += deltaTime;
+
+                    }
                     this.update_patience_bar();
                     this.update_fruit_order_UI();
                     if (this.elaspsed_patience >= this.max_wait_time) {
@@ -257,7 +284,7 @@ export class FruitCustomer extends Component {
         
             // reward player, then reset the cutomerm then reset the fruit available next round
             case customer_state.ORDER_FULLFILLED:
-                this.reward_player(true);
+                this.reward_player();
                 this.reset_customer();
                 this.game_manager.getComponent(GameManager).select_random_fruit(this.game_manager.getComponent(GameManager).game_mode);
                 if (Math.random() > 0.5) {

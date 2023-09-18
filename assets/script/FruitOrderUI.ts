@@ -48,7 +48,7 @@ export class FruitOrderUI extends Component {
                 this.idle_anim = this.idle_animation_list[i];
                 this.fruit_sprite_animation_component.play(this.idle_anim);
                 this.animation_playing = true;
-                break;
+                return;
             }
         }
 
