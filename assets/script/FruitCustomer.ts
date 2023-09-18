@@ -38,10 +38,11 @@ export class FruitCustomer extends Component {
     private order_rate: number = 0.5
     private min_demand: number = 10;
     private max_demand: number = 50;
-    private total_demand: number = 0
+    private total_demand: number = 0;
 
     private max_wait_time: number = 20;
     private elaspsed_patience: number = 0;
+    public pause_countdown: boolean = false;
 
     @property(Node)
     public fruit_order_ui: Node[] = [];
@@ -256,14 +257,17 @@ export class FruitCustomer extends Component {
                 this.take_stock_from_player();
                 this.update_customer_patience_countdown();
                 if (this.total_demand > 0) {
-                    this.elaspsed_patience += deltaTime;
+                    if (this.pause_countdown == false) {
+                        this.elaspsed_patience += deltaTime;
+
+                    }
                     this.update_patience_bar();
                     this.update_fruit_order_UI();
-                    // if (this.elaspsed_patience >= this.max_wait_time) {
-                    //     console.log(this.name + " loses all his patience, he left you");
-                    //     // this.current_state = customer_state.CANCEL_ORDER;
+                    if (this.elaspsed_patience >= this.max_wait_time) {
+                        console.log(this.name + " loses all his patience, he left you");
+                        this.current_state = customer_state.CANCEL_ORDER;
 
-                    // }
+                    }
                 } else {
                     // else if success, switch state to demand fullfilled
                     console.log(this.node.name + " demand is fullfilled!");
