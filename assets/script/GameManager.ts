@@ -143,7 +143,7 @@ export class GameManager extends Component {
         let spacing_x: number = this.card_grid.getComponent(Layout).spacingX;
         let card_size_x: number = 32 + spacing_x;
         let total_card_size_x: number = card_size_x * this.game_mode;
-        let new_scale: number = 360 / total_card_size_x;
+        let new_scale: number = 340 / total_card_size_x;
 
         // this.card_grid.scale = new Vec3(new_scale, new_scale, new_scale);
         return new_scale;
