@@ -13,8 +13,6 @@ export class FruitCard extends Component {
 
     @property(Number)
     public show_time: number = 30;
-    private countdown_time: boolean = true
-    private elasped_time: number = 0;
 
     @property(Node)
     public fruit_sprite: Node;
@@ -37,6 +35,11 @@ export class FruitCard extends Component {
 
     private rotting_rate: number = 0;
     public is_rotten: boolean = false;
+
+    @property(SpriteFrame)
+    public card_background_hidden: SpriteFrame;
+    @property(SpriteFrame)
+    public card_background_choosen: SpriteFrame;
 
     private is_hidden: boolean = false;
 
@@ -99,6 +102,7 @@ export class FruitCard extends Component {
         this.is_hidden = true;
         this.animation_component.stop();
         this.fruit_sprite.getComponent(Sprite).spriteFrame = this.question_mark_frame;
+        this.node.getComponent(Sprite).spriteFrame = this.card_background_hidden;
     }
 
     // show the card after being touched
@@ -106,13 +110,13 @@ export class FruitCard extends Component {
         this.is_hidden = false
         this.node.getComponent(UIOpacity).opacity = 255;
         this.fruit_sprite.getComponent(Sprite).spriteFrame = this.choosen_frame;
+        this.node.getComponent(Sprite).spriteFrame = this.card_background_choosen;
     }
 
     // initialize the card when the game start
     public start_game(): void {
         this.hide_card();
         this.monitor_touch = true;
-        this.countdown_time = false
     }
 
     // increase the rot chance and check if the fruit has become rotten
