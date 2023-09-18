@@ -2,7 +2,7 @@
   "ver": "1.0.25",
   "importer": "image",
   "imported": true,
-  "uuid": "7fa916c5-568b-423e-b1a5-68c030bcf7a3",
+  "uuid": "f276aac7-592c-4785-a7db-5fcc2c7efd87",
   "files": [
     ".json",
     ".png"
@@ -10,14 +10,14 @@
   "subMetas": {
     "6c48a": {
       "importer": "texture",
-      "uuid": "7fa916c5-568b-423e-b1a5-68c030bcf7a3@6c48a",
-      "displayName": "apple_card",
+      "uuid": "f276aac7-592c-4785-a7db-5fcc2c7efd87@6c48a",
+      "displayName": "card_background_2",
       "id": "6c48a",
       "name": "texture",
       "userData": {
         "wrapModeS": "clamp-to-edge",
         "wrapModeT": "clamp-to-edge",
-        "imageUuidOrDatabaseUri": "7fa916c5-568b-423e-b1a5-68c030bcf7a3",
+        "imageUuidOrDatabaseUri": "f276aac7-592c-4785-a7db-5fcc2c7efd87",
         "isUuid": true,
         "visible": false,
         "minfilter": "nearest",
@@ -34,8 +34,8 @@
     },
     "f9941": {
       "importer": "sprite-frame",
-      "uuid": "7fa916c5-568b-423e-b1a5-68c030bcf7a3@f9941",
-      "displayName": "apple_card",
+      "uuid": "f276aac7-592c-4785-a7db-5fcc2c7efd87@f9941",
+      "displayName": "card_background_2",
       "id": "f9941",
       "name": "spriteFrame",
       "userData": {
@@ -47,9 +47,9 @@
         "trimX": 0,
         "trimY": 0,
         "width": 32,
-        "height": 57,
+        "height": 32,
         "rawWidth": 32,
-        "rawHeight": 57,
+        "rawHeight": 32,
         "borderTop": 0,
         "borderBottom": 0,
         "borderLeft": 0,
@@ -62,16 +62,16 @@
         "vertices": {
           "rawPosition": [
             -16,
-            -28.5,
+            -16,
             0,
             16,
-            -28.5,
+            -16,
             0,
             -16,
-            28.5,
+            16,
             0,
             16,
-            28.5,
+            16,
             0
           ],
           "indexes": [
@@ -84,9 +84,9 @@
           ],
           "uv": [
             0,
-            57,
             32,
-            57,
+            32,
+            32,
             0,
             0,
             32,
@@ -104,17 +104,17 @@
           ],
           "minPos": [
             -16,
-            -28.5,
+            -16,
             0
           ],
           "maxPos": [
             16,
-            28.5,
+            16,
             0
           ]
         },
         "isUuid": true,
-        "imageUuidOrDatabaseUri": "7fa916c5-568b-423e-b1a5-68c030bcf7a3@6c48a",
+        "imageUuidOrDatabaseUri": "f276aac7-592c-4785-a7db-5fcc2c7efd87@6c48a",
         "atlasUuid": ""
       },
       "ver": "1.0.12",
@@ -128,10 +128,7 @@
   "userData": {
     "type": "sprite-frame",
     "fixAlphaTransparencyArtifacts": true,
-    "hasAlpha": true,
-    "redirect": "7fa916c5-568b-423e-b1a5-68c030bcf7a3@f9941",
-    "compressSettings": {
-      "useCompressTexture": false
-    }
+    "hasAlpha": false,
+    "redirect": "f276aac7-592c-4785-a7db-5fcc2c7efd87@f9941"
   }
 }
