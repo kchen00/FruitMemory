@@ -1,4 +1,4 @@
-import { _decorator, AnimationComponent, Camera, clamp, Component, director, game, instantiate, Label, Layout, LayoutComponent, math, Node, ParticleSystem2D, Prefab, ProgressBar, random, Scene, Script, size, Size, Sprite, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
+import { _decorator, AnimationComponent, Button, Camera, clamp, Component, director, game, instantiate, Label, Layout, LayoutComponent, math, Node, ParticleSystem2D, Prefab, ProgressBar, random, Scene, Script, size, Size, Sprite, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
 import { Fruit } from './Fruit';
 import { FruitCard } from './FruitCard';
 import { FruitCustomer } from './FruitCustomer';
@@ -113,6 +113,11 @@ export class GameManager extends Component {
     @property(Node)
     public game_over_node: Node;
     private game_over_screen_displayed: boolean = false;
+    @property(Node)
+    public game_over_score_label: Node;
+
+    @property(Node)
+    public stock_now_button: Node;
 
 
     start() {
@@ -350,7 +355,7 @@ export class GameManager extends Component {
     }
 
     update(deltaTime: number) {
-        this.decrease_player_reputation(1);
+        this.decrease_player_reputation(5*deltaTime);
         switch(this.current_game_state) {
             // countdown to hide card, let player memorize the cards
             case game_state.SHOW_PLAYER_CARD:
@@ -405,7 +410,23 @@ export class GameManager extends Component {
             case game_state.GAME_OVER:
                 // show the game over node
                 if (this.game_over_screen_displayed == false) {
+                    this.camera_node.getComponent(CameraController).apply_intensity(10, 8);
                     this.game_over_node.getComponent(AnimationComponent).play();
+                    
+                    this.fruit_cards.forEach(card => {
+                        card.getComponent(FruitCard).monitor_touch = false;
+                        card.getComponent(FruitCard).game_over_splash();
+
+                    });
+
+                    this.stock_now_button.getComponent(Button).interactable = false;
+
+                    //set score on the game over screen
+                    this.game_over_score_label.getComponent(Label).string = this.score.toString();
+                    
+
+                    
+                    
                     this.game_over_screen_displayed = true;
                 }
 

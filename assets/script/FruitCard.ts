@@ -9,7 +9,7 @@ export class FruitCard extends Component {
 
     @property(Node)
     public game_manager: Node;
-    private monitor_touch: boolean = false;
+    public monitor_touch: boolean = false;
 
     @property(Number)
     public show_time: number = 30;
@@ -135,6 +135,11 @@ export class FruitCard extends Component {
         this.is_rotten = false;
         this.node.getComponent(Sprite).color = new Color(255, 255, 255, 255)
         this.rotten_particles.getComponent(ParticleSystem2D).stopSystem();
+    }
+
+    //splash after game over
+    public game_over_splash(): void {
+        this.burst_particle.getComponent(ParticleSystem2D).resetSystem();
     }
 
     update(deltaTime: number) {
