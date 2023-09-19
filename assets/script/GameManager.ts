@@ -120,6 +120,7 @@ export class GameManager extends Component {
 
     @property(Node)
     public stock_now_button: Node;
+    private can_stock_now: boolean = true
 
 
     start() {
@@ -315,6 +316,7 @@ export class GameManager extends Component {
     // hide all the cards
     private hide_all_card(): void {
         this.show_card_elasped_time = this.card_show_time;
+        this.can_stock_now = false;
         this.fruit_cards.forEach(card => {
             card.getComponent(FruitCard).start_game();
         });
@@ -383,6 +385,12 @@ export class GameManager extends Component {
 
             //start matching
             case game_state.START_MATCHING:
+                // disable the button once clicked
+                if (this.can_stock_now) {
+                    this.stock_now_button.getComponent(Button).interactable = true;
+                } else {
+                    this.stock_now_button.getComponent(Button).interactable = false;
+                }
 
                 break
             
@@ -405,6 +413,9 @@ export class GameManager extends Component {
                 console.log("resetting done, showing player card");
                 this.show_card_elasped_time = 0
                 this.spawned_card = this.fruit_cards.length;
+                // enable the button again
+                this.can_stock_now = true;
+                this.stock_now_button.getComponent(Button).interactable = true;
                 this.current_game_state = game_state.SHOW_PLAYER_CARD;
                 break;
 
