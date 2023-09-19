@@ -426,9 +426,9 @@ export class GameManager extends Component {
                     //set score on the game over screen
                     this.game_over_score_label.getComponent(Label).string = this.score.toString();
 
-                    // this.game_over_particle.children.forEach(child => {
-                    //     child.getComponent(ParticleSystem2D).resetSystem();
-                    // }) 
+                    this.game_over_particle.children.forEach(child => {
+                        child.getComponent(ParticleSystem2D).resetSystem();
+                    }) 
                     
                     this.game_over_screen_displayed = true;
                 }
