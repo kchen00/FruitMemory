@@ -52,7 +52,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 127
+      "__id__": 129
     },
     "_id": "866bc362-aaca-4771-93a9-d405ed939ba0"
   },
@@ -328,6 +328,7 @@
       "__id__": 71
     },
     "game_over_score_label": null,
+    "game_over_particle": null,
     "stock_now_button": null,
     "_id": "4dFLZMgWNEpYrTrVbERhvE"
   },
@@ -1243,7 +1244,7 @@
   },
   {
     "__type__": "cc.PrefabInstance",
-    "fileId": "71fVP8qhpKR60/h/fx3zdx",
+    "fileId": "a7dHoprBlP/byoNE+PN5H4",
     "prefabRootNode": null,
     "mountedChildren": [],
     "mountedComponents": [],
@@ -1290,7 +1291,7 @@
     "value": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -735.711,
+      "y": -733.9,
       "z": 0
     }
   },
@@ -1553,6 +1554,9 @@
       },
       {
         "__id__": 125
+      },
+      {
+        "__id__": 127
       }
     ],
     "nestedPrefabInstanceRoots": [
@@ -1862,13 +1866,35 @@
     },
     "sourceInfo": null,
     "propertyPath": [
+      "stock_now_button"
+    ],
+    "target": {
+      "__id__": 31
+    },
+    "targetInfo": {
+      "__id__": 114
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "74aAwautZBGJSioJ/cKGEm"
+    ]
+  },
+  {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 8
+    },
+    "sourceInfo": null,
+    "propertyPath": [
       "score_label"
     ],
     "target": {
       "__id__": 11
     },
     "targetInfo": {
-      "__id__": 114
+      "__id__": 116
     }
   },
   {
@@ -1890,35 +1916,13 @@
       "__id__": 11
     },
     "targetInfo": {
-      "__id__": 116
-    }
-  },
-  {
-    "__type__": "cc.TargetInfo",
-    "localID": [
-      "3d46Y4C3VOE5uFHxX0/AS5"
-    ]
-  },
-  {
-    "__type__": "cc.TargetOverrideInfo",
-    "source": {
-      "__id__": 8
-    },
-    "sourceInfo": null,
-    "propertyPath": [
-      "player_reputattion_label"
-    ],
-    "target": {
-      "__id__": 11
-    },
-    "targetInfo": {
       "__id__": 118
     }
   },
   {
     "__type__": "cc.TargetInfo",
     "localID": [
-      "51AFe2PgFKaI3S5BJ3coP2"
+      "3d46Y4C3VOE5uFHxX0/AS5"
     ]
   },
   {
@@ -1950,7 +1954,7 @@
     },
     "sourceInfo": null,
     "propertyPath": [
-      "player_level_label"
+      "player_reputattion_label"
     ],
     "target": {
       "__id__": 11
@@ -1962,7 +1966,7 @@
   {
     "__type__": "cc.TargetInfo",
     "localID": [
-      "0fa+3w6FxMS6OOZuf9h79e"
+      "51AFe2PgFKaI3S5BJ3coP2"
     ]
   },
   {
@@ -1972,10 +1976,10 @@
     },
     "sourceInfo": null,
     "propertyPath": [
-      "stock_now_button"
+      "player_level_label"
     ],
     "target": {
-      "__id__": 31
+      "__id__": 11
     },
     "targetInfo": {
       "__id__": 124
@@ -1984,7 +1988,7 @@
   {
     "__type__": "cc.TargetInfo",
     "localID": [
-      "74aAwautZBGJSioJ/cKGEm"
+      "0fa+3w6FxMS6OOZuf9h79e"
     ]
   },
   {
@@ -2010,24 +2014,46 @@
     ]
   },
   {
+    "__type__": "cc.TargetOverrideInfo",
+    "source": {
+      "__id__": 8
+    },
+    "sourceInfo": null,
+    "propertyPath": [
+      "game_over_particle"
+    ],
+    "target": {
+      "__id__": 71
+    },
+    "targetInfo": {
+      "__id__": 128
+    }
+  },
+  {
+    "__type__": "cc.TargetInfo",
+    "localID": [
+      "958EEqGQNM04uFvavW8Xrt"
+    ]
+  },
+  {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 128
-    },
-    "shadows": {
-      "__id__": 129
-    },
-    "_skybox": {
       "__id__": 130
     },
-    "fog": {
+    "shadows": {
       "__id__": 131
     },
-    "octree": {
+    "_skybox": {
       "__id__": 132
     },
-    "lightProbeInfo": {
+    "fog": {
       "__id__": 133
+    },
+    "octree": {
+      "__id__": 134
+    },
+    "lightProbeInfo": {
+      "__id__": 135
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false
