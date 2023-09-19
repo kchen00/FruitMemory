@@ -1,4 +1,4 @@
-import { _decorator, Camera, clamp, Component, director, game, instantiate, Label, Layout, LayoutComponent, math, Node, ParticleSystem2D, Prefab, ProgressBar, random, Scene, Script, size, Size, Sprite, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
+import { _decorator, AnimationComponent, Camera, clamp, Component, director, game, instantiate, Label, Layout, LayoutComponent, math, Node, ParticleSystem2D, Prefab, ProgressBar, random, Scene, Script, size, Size, Sprite, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
 import { Fruit } from './Fruit';
 import { FruitCard } from './FruitCard';
 import { FruitCustomer } from './FruitCustomer';
@@ -110,6 +110,9 @@ export class GameManager extends Component {
     private previous_selected_card: Node;
     private selected_card: Node;
     
+    @property(Node)
+    public game_over_node: Node;
+    private game_over_screen_displayed: boolean = false;
 
 
     start() {
@@ -340,12 +343,14 @@ export class GameManager extends Component {
         this.player_reputation -= amount;
         if (this.player_reputation <= this.level_max_reputation * (this.player_level - 1)) {
             console.log("game over");
+            this.current_game_state = game_state.GAME_OVER;
             return;
         }
         this.update_reputation_bar();
     }
 
     update(deltaTime: number) {
+        this.decrease_player_reputation(1);
         switch(this.current_game_state) {
             // countdown to hide card, let player memorize the cards
             case game_state.SHOW_PLAYER_CARD:
@@ -395,6 +400,15 @@ export class GameManager extends Component {
                 this.spawned_card = this.fruit_cards.length;
                 this.current_game_state = game_state.SHOW_PLAYER_CARD;
                 break;
+
+            // when game over show the game over scene
+            case game_state.GAME_OVER:
+                // show the game over node
+                if (this.game_over_screen_displayed == false) {
+                    this.game_over_node.getComponent(AnimationComponent).play();
+                    this.game_over_screen_displayed = true;
+                }
+
             
 
         }
