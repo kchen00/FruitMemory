@@ -21,7 +21,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 238
+      "__id__": 239
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -52,7 +52,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 239
+      "__id__": 240
     },
     "_id": "b08b013b-2006-49df-88fc-b12d7a6c085e"
   },
@@ -83,13 +83,13 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 235
-      },
-      {
         "__id__": 236
       },
       {
         "__id__": 237
+      },
+      {
+        "__id__": 238
       }
     ],
     "_prefab": null,
@@ -2481,10 +2481,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 233
+        "__id__": 234
       },
       {
-        "__id__": 234
+        "__id__": 235
       }
     ],
     "_prefab": null,
@@ -4549,6 +4549,9 @@
       },
       {
         "__id__": 232
+      },
+      {
+        "__id__": 233
       }
     ],
     "_prefab": null,
@@ -4840,6 +4843,24 @@
     "_id": "0aSXJU+7xDDpjMRzzBuzSz"
   },
   {
+    "__type__": "cc.AudioSource",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 224
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "_clip": {
+      "__uuid__": "b3c6ea2f-c1f9-4c4d-b765-8c7c956de8f4",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "_loop": false,
+    "_playOnAwake": false,
+    "_volume": 1,
+    "_id": "89hDtiRpZO8bvP1HVwOGMG"
+  },
+  {
     "__type__": "cc.UITransform",
     "_name": "",
     "_objFlags": 0,
@@ -5008,22 +5029,22 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 240
-    },
-    "shadows": {
       "__id__": 241
     },
-    "_skybox": {
+    "shadows": {
       "__id__": 242
     },
-    "fog": {
+    "_skybox": {
       "__id__": 243
     },
-    "octree": {
+    "fog": {
       "__id__": 244
     },
-    "lightProbeInfo": {
+    "octree": {
       "__id__": 245
+    },
+    "lightProbeInfo": {
+      "__id__": 246
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false
