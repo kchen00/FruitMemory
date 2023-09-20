@@ -353,7 +353,7 @@
     ],
     "level_up_sound": [
       {
-        "__uuid__": "ee961096-e553-4baf-9186-81719b36e643",
+        "__uuid__": "eecfa9e0-918e-4e9d-b289-d8029a4e3ae3",
         "__expectedType__": "cc.AudioClip"
       },
       {
@@ -365,7 +365,7 @@
         "__expectedType__": "cc.AudioClip"
       },
       {
-        "__uuid__": "92b5fb78-07e7-434a-aabc-aaa97cc0efe7",
+        "__uuid__": "0f36edf0-f64a-40de-b538-b297b91e46fd",
         "__expectedType__": "cc.AudioClip"
       }
     ],

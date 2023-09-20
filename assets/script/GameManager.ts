@@ -257,6 +257,9 @@ export class GameManager extends Component {
                         this.card_cleared += 2;
                         this.increase_player_score(selected_card_assigned_fruit.fruit_value*perfect_fruit);
 
+                        // play sound when match sucessfully
+                        this.selected_card.getComponent(FruitCard).play_sound(true);
+
                         // reset the card when all the cards are matched
                         if (this.spawned_card <= 0) {
                             this.current_game_state = game_state.RESET_CARDS;
@@ -271,6 +274,7 @@ export class GameManager extends Component {
 
 
                         this.selected_card.getComponent(FruitCard).hide_card();
+                        // play sound when failed to match
                         this.selected_card.getComponent(FruitCard).play_sound(false);
                         this.previous_selected_card.getComponent(FruitCard).hide_card();
 
