@@ -1,4 +1,4 @@
-import { _decorator, AnimationComponent, Button, Camera, clamp, Component, director, game, instantiate, Label, Layout, LayoutComponent, math, Node, ParticleSystem2D, Prefab, ProgressBar, random, Scene, Script, size, Size, Sprite, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
+import { _decorator, AnimationComponent, AudioClip, AudioSource, Button, Camera, clamp, Component, director, game, instantiate, Label, Layout, LayoutComponent, math, Node, ParticleSystem2D, Prefab, ProgressBar, random, Scene, Script, size, Size, Sprite, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
 import { Fruit } from './Fruit';
 import { FruitCard } from './FruitCard';
 import { FruitCustomer } from './FruitCustomer';
@@ -120,8 +120,12 @@ export class GameManager extends Component {
 
     @property(Node)
     public stock_now_button: Node;
-    private can_stock_now: boolean = true
+    private can_stock_now: boolean = true;
 
+    @property(AudioClip)
+    public game_over_sound: AudioClip;
+    @property(AudioClip)
+    public level_up_sound: AudioClip;
 
     start() {
         this.update_score_label();
@@ -253,6 +257,9 @@ export class GameManager extends Component {
                         this.card_cleared += 2;
                         this.increase_player_score(selected_card_assigned_fruit.fruit_value*perfect_fruit);
 
+                        // play sound when match sucessfully
+                        this.selected_card.getComponent(FruitCard).play_sound(true);
+
                         // reset the card when all the cards are matched
                         if (this.spawned_card <= 0) {
                             this.current_game_state = game_state.RESET_CARDS;
@@ -267,6 +274,8 @@ export class GameManager extends Component {
 
 
                         this.selected_card.getComponent(FruitCard).hide_card();
+                        // play sound when failed to match
+                        this.selected_card.getComponent(FruitCard).play_sound(false);
                         this.previous_selected_card.getComponent(FruitCard).hide_card();
 
                         this.camera_node.getComponent(CameraController).apply_intensity(5, 4);
@@ -340,7 +349,10 @@ export class GameManager extends Component {
         this.player_reputation += amount;
         // wrapped progress
         if (this.player_reputation >= this.level_max_reputation * this.player_level) {
-            this.player_level += 1
+            this.player_level += 1;
+            this.node.getComponent(AudioSource).clip = this.level_up_sound;
+            this.node.getComponent(AudioSource).play();
+            this.camera_node.getComponent(CameraController).apply_intensity(10, 8);
             this.level_up_confetti.getComponent(ParticleSystem2D).resetSystem();
         }
         this.update_reputation_bar();
@@ -439,7 +451,10 @@ export class GameManager extends Component {
 
                     this.game_over_particle.children.forEach(child => {
                         child.getComponent(ParticleSystem2D).resetSystem();
-                    }) 
+                    })
+
+                    this.node.getComponent(AudioSource).clip = this.game_over_sound;
+                    this.node.getComponent(AudioSource).play();
                     
                     this.game_over_screen_displayed = true;
                 }
