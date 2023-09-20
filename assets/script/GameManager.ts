@@ -123,9 +123,9 @@ export class GameManager extends Component {
     private can_stock_now: boolean = true;
 
     @property(AudioClip)
-    public game_over_sound: AudioClip[] = [];
+    public game_over_sound: AudioClip;
     @property(AudioClip)
-    public level_up_sound: AudioClip[] = [];
+    public level_up_sound: AudioClip;
 
     start() {
         this.update_score_label();
@@ -350,7 +350,7 @@ export class GameManager extends Component {
         // wrapped progress
         if (this.player_reputation >= this.level_max_reputation * this.player_level) {
             this.player_level += 1;
-            this.node.getComponent(AudioSource).clip = this.level_up_sound[Math.floor(Math.random() * this.level_up_sound.length)];
+            this.node.getComponent(AudioSource).clip = this.level_up_sound;
             this.node.getComponent(AudioSource).play();
             this.camera_node.getComponent(CameraController).apply_intensity(10, 8);
             this.level_up_confetti.getComponent(ParticleSystem2D).resetSystem();
@@ -371,7 +371,7 @@ export class GameManager extends Component {
     }
 
     update(deltaTime: number) {
-        this.increase_player_reputation(5*deltaTime);
+        this.decrease_player_reputation(5*deltaTime);
         switch(this.current_game_state) {
             // countdown to hide card, let player memorize the cards
             case game_state.SHOW_PLAYER_CARD:
@@ -453,7 +453,7 @@ export class GameManager extends Component {
                         child.getComponent(ParticleSystem2D).resetSystem();
                     })
 
-                    this.node.getComponent(AudioSource).clip = this.game_over_sound[Math.floor(Math.random() * this.game_over_sound.length)];
+                    this.node.getComponent(AudioSource).clip = this.game_over_sound;
                     this.node.getComponent(AudioSource).play();
                     
                     this.game_over_screen_displayed = true;

@@ -49,9 +49,9 @@ export class FruitCard extends Component {
     public burst_particle: Node;
 
     @property(AudioClip)
-    public sucesss_match_sound: AudioClip[] = [];
+    public sucesss_match_sound: AudioClip;
     @property(AudioClip)
-    public fail_match_sound: AudioClip[] = [];
+    public fail_match_sound: AudioClip;
 
     start() {
         console.log("received fruit:  " + this.assigned_fruit.fruit_name);
@@ -150,9 +150,9 @@ export class FruitCard extends Component {
     public play_sound(success: boolean) {
         let audio_to_play: AudioClip;
         if (success) {
-            audio_to_play = this.sucesss_match_sound[Math.floor(Math.random() * this.sucesss_match_sound.length)];
+            audio_to_play = this.sucesss_match_sound;
         } else {
-            audio_to_play = this.fail_match_sound[Math.floor(Math.random() * this.fail_match_sound.length)];
+            audio_to_play = this.fail_match_sound;
         }
 
         if (audio_to_play) {
