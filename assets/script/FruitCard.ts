@@ -52,6 +52,7 @@ export class FruitCard extends Component {
     public sucesss_match_sound: AudioClip[] = [];
     @property(AudioClip)
     public fail_match_sound: AudioClip[] = [];
+    public sound_effect_index: number = 0;
 
     start() {
         console.log("received fruit:  " + this.assigned_fruit.fruit_name);
@@ -150,9 +151,9 @@ export class FruitCard extends Component {
     public play_sound(success: boolean) {
         let audio_to_play: AudioClip;
         if (success) {
-            audio_to_play = this.sucesss_match_sound[Math.floor(Math.random() * this.sucesss_match_sound.length)];
+            audio_to_play = this.sucesss_match_sound[this.sound_effect_index];
         } else {
-            audio_to_play = this.fail_match_sound[Math.floor(Math.random() * this.fail_match_sound.length)];
+            audio_to_play = this.fail_match_sound[this.sound_effect_index];
         }
 
         if (audio_to_play) {

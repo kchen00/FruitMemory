@@ -333,42 +333,14 @@
     "game_over_score_label": null,
     "game_over_particle": null,
     "stock_now_button": null,
-    "game_over_sound": [
-      {
-        "__uuid__": "01224cfe-212e-4682-b79c-ee6eaab0f82b",
-        "__expectedType__": "cc.AudioClip"
-      },
-      {
-        "__uuid__": "98bd2cfc-2b7b-4606-9863-68e926365838",
-        "__expectedType__": "cc.AudioClip"
-      },
-      {
-        "__uuid__": "7e96c995-0728-4592-b959-ddfc8e38f468",
-        "__expectedType__": "cc.AudioClip"
-      },
-      {
-        "__uuid__": "e77e8b3a-82d1-4583-92c8-52d7b1828780",
-        "__expectedType__": "cc.AudioClip"
-      }
-    ],
-    "level_up_sound": [
-      {
-        "__uuid__": "eecfa9e0-918e-4e9d-b289-d8029a4e3ae3",
-        "__expectedType__": "cc.AudioClip"
-      },
-      {
-        "__uuid__": "362b782e-3f29-4b9a-b698-85e7a3d62adf",
-        "__expectedType__": "cc.AudioClip"
-      },
-      {
-        "__uuid__": "53f59efc-9bd5-4a5f-9845-2d7c4d2c6264",
-        "__expectedType__": "cc.AudioClip"
-      },
-      {
-        "__uuid__": "0f36edf0-f64a-40de-b538-b297b91e46fd",
-        "__expectedType__": "cc.AudioClip"
-      }
-    ],
+    "game_over_sound": {
+      "__uuid__": "98bd2cfc-2b7b-4606-9863-68e926365838",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "level_up_sound": {
+      "__uuid__": "eecfa9e0-918e-4e9d-b289-d8029a4e3ae3",
+      "__expectedType__": "cc.AudioClip"
+    },
     "_id": "4dFLZMgWNEpYrTrVbERhvE"
   },
   {

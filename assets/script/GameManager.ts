@@ -126,6 +126,8 @@ export class GameManager extends Component {
     public game_over_sound: AudioClip[] = [];
     @property(AudioClip)
     public level_up_sound: AudioClip[] = [];
+    // sound effect index for fruit card to acces the audio clip
+    private fruit_card_sound_index: number = 0;
 
     start() {
         this.update_score_label();
@@ -176,6 +178,9 @@ export class GameManager extends Component {
 
     // reset cards when each round id finish
     private reset_cards(): void {
+        // increment the sound index and wrap the value around 0-3
+        this.fruit_card_sound_index += 1;
+        this.fruit_card_sound_index = this.fruit_card_sound_index % 4;
         if(this.selected_fruit_for_this_round) {
             for (let i = 0; i < this.fruit_cards.length; i++) {
                 if (i%this.game_mode == 0){
@@ -184,10 +189,12 @@ export class GameManager extends Component {
                 // assign fruit the the card
                 // get the coressponding sprite frame
                 // reset the rot rate
+                this.fruit_cards[i].getComponent(FruitCard).sound_effect_index = this.fruit_card_sound_index;
                 this.fruit_cards[i].getComponent(FruitCard).set_assigned_fruit(this.selected_fruit_for_this_round[i%this.game_mode]);
                 this.fruit_cards[i].getComponent(FruitCard).get_sprite_frame();
                 this.fruit_cards[i].getComponent(FruitCard).get_animation_clip();
                 this.fruit_cards[i].getComponent(FruitCard).reset_card();
+                
             }
 
         }
@@ -420,14 +427,16 @@ export class GameManager extends Component {
                     this.select_random_fruit(this.game_mode);
                 }
                 
-                console.log("all cards has been matched, resetting the card");
+                console.log("all cards has been matched, resetting the card");                
                 this.reset_cards();
                 console.log("resetting done, showing player card");
                 this.show_card_elasped_time = 0
                 this.spawned_card = this.fruit_cards.length;
+                
                 // enable the button again
                 this.can_stock_now = true;
                 this.stock_now_button.getComponent(Button).interactable = true;
+                
                 this.current_game_state = game_state.SHOW_PLAYER_CARD;
                 break;
 
