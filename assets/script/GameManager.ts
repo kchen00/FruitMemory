@@ -373,10 +373,32 @@ export class GameManager extends Component {
 
     // compare previous score and save the highscore
     private save_game(): void {
-        // create a new save game object
-        let new_save: SaveGame = new SaveGame(this.player_score, this.player_level, this.player_reputation, this.player_reputation_title_label.string);
-        console.log(JSON.stringify(new_save.get_save_game()));
-        localStorage.setItem("save_game", JSON.stringify(new_save.get_save_game()))
+        // read the previous save to compare the score
+        let previous_save: any = localStorage.getItem("save_game");
+
+        // if there is save previously, read the high score
+        if (previous_save) {
+            console.log("save game found");
+            console.log(previous_save);
+            let parsed_data: any = JSON.parse(previous_save);
+            let previous_score = parsed_data.score_achieved;
+            // compare the high score, if current score is higher than previous score, make a new save
+            // else no need to save
+            if (this.player_score > previous_score) {
+                console.log("New highscore!");
+                // create a new save game object
+                let new_save: SaveGame = new SaveGame(this.player_score, this.player_level, this.player_reputation, this.player_reputation_title_label.string);
+                console.log(JSON.stringify(new_save.get_save_game()));
+                localStorage.setItem("save_game", JSON.stringify(new_save.get_save_game()))
+
+            }
+        } else {
+            // if there is no save game, save the game
+            console.log("no save game found");
+            let new_save: SaveGame = new SaveGame(this.player_score, this.player_level, this.player_reputation, this.player_reputation_title_label.string);
+            console.log(JSON.stringify(new_save.get_save_game()));
+            localStorage.setItem("save_game", JSON.stringify(new_save.get_save_game()))
+        } 
     }
 
 
