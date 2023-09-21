@@ -3,6 +3,7 @@ import { Fruit } from './Fruit';
 import { FruitCard } from './FruitCard';
 import { FruitCustomer } from './FruitCustomer';
 import { CameraController } from './CameraController';
+import { SaveGame } from './SaveGame';
 
 const { ccclass, property } = _decorator;
 
@@ -44,7 +45,7 @@ export class GameManager extends Component {
     
     @property(Label)
     public score_label: Label;
-    private score: number = 0;
+    private player_score: number = 0;
 
     private player_level: number = 1;
     @property(ProgressBar)
@@ -291,8 +292,8 @@ export class GameManager extends Component {
 
 
     private update_score_label(): void {
-        console.log("player score: " + this.score);
-        this.score_label.string = "Score:  " + this.score.toString();
+        console.log("player score: " + this.player_score);
+        this.score_label.string = "Score:  " + this.player_score.toString();
 
     }
 
@@ -310,7 +311,7 @@ export class GameManager extends Component {
     }
 
     public increase_player_score(amount: number): void {
-        this.score += amount;
+        this.player_score += amount;
         this.update_score_label();
     }
 
@@ -370,8 +371,16 @@ export class GameManager extends Component {
         this.update_reputation_bar();
     }
 
+    // compare previous score and save the highscore
+    private save_game(): void {
+        // create a new save game object
+        let new_save: SaveGame = new SaveGame(this.player_score, this.player_level, this.player_reputation, this.player_reputation_title_label.string);
+        console.log(JSON.stringify(new_save.get_save_game()));
+        localStorage.setItem("save_game", JSON.stringify(new_save.get_save_game()))
+    }
+
+
     update(deltaTime: number) {
-        this.decrease_player_reputation(5*deltaTime);
         switch(this.current_game_state) {
             // countdown to hide card, let player memorize the cards
             case game_state.SHOW_PLAYER_CARD:
@@ -397,6 +406,8 @@ export class GameManager extends Component {
 
             //start matching
             case game_state.START_MATCHING:
+                // for testing purpose, delete when deploy
+                this.decrease_player_reputation(5*deltaTime);
                 // disable the button once clicked
                 if (this.can_stock_now) {
                     this.stock_now_button.getComponent(Button).interactable = true;
@@ -447,7 +458,7 @@ export class GameManager extends Component {
                     this.stock_now_button.getComponent(Button).interactable = false;
 
                     //set score on the game over screen
-                    this.game_over_score_label.getComponent(Label).string = this.score.toString();
+                    this.game_over_score_label.getComponent(Label).string = this.player_score.toString();
 
                     this.game_over_particle.children.forEach(child => {
                         child.getComponent(ParticleSystem2D).resetSystem();
@@ -456,8 +467,11 @@ export class GameManager extends Component {
                     this.node.getComponent(AudioSource).clip = this.game_over_sound;
                     this.node.getComponent(AudioSource).play();
                     
+                    this.save_game();
+
                     this.game_over_screen_displayed = true;
                 }
+                break;
 
             
 
