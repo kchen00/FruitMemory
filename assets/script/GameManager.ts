@@ -484,6 +484,9 @@ export class GameManager extends Component {
                         child.getComponent(ParticleSystem2D).resetSystem();
                     })
 
+                    // play game over voice over
+                    this.game_over_node.getComponent(AudioSource).play();
+
                     this.node.getComponent(AudioSource).clip = this.game_over_sound;
                     this.node.getComponent(AudioSource).play();
                     
