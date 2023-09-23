@@ -8,6 +8,13 @@ export class PersistentMusicNode extends Component {
         director.addPersistRootNode(this.node);
         
     }
+
+    // destroy node when switching to main game scene
+    protected update(dt: number): void {
+        if (director.getScene().name == "main") {
+            this.node.destroy();
+        }
+    }
 }
 
 
