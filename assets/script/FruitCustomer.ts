@@ -1,8 +1,9 @@
-import { _decorator, clamp, Component, Label, math, Node, ProgressBar, random, Sprite, UIOpacity } from 'cc';
+import { _decorator, clamp, Component, game, Label, math, Node, ProgressBar, random, Sprite, UIOpacity } from 'cc';
 import { Fruit } from './Fruit';
 import { CustomerOrder } from './CustomerOrder';
 import { GameManager } from './GameManager';
 import { FruitOrderUI } from './FruitOrderUI';
+import { BgmManager } from './BgmManager';
 const { ccclass, property } = _decorator;
 
 enum customer_state {
@@ -59,7 +60,7 @@ export class FruitCustomer extends Component {
     @property(Label)
     public customer_patience_countdown: Label;
 
-    
+
 
     start() {
         this.order_rate = this.initial_order_rate;
@@ -259,7 +260,6 @@ export class FruitCustomer extends Component {
                 if (this.total_demand > 0) {
                     if (this.pause_countdown == false) {
                         this.elaspsed_patience += deltaTime;
-
                     }
                     this.update_patience_bar();
                     this.update_fruit_order_UI();
