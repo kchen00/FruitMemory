@@ -1,14 +1,18 @@
 {
   "__version__": "3.0.7",
   "game": {
-    "name": "UNKNOW GAME",
-    "app_id": "UNKNOW",
-    "c_id": "0"
+    "app_id": "652364396",
+    "c_id": "0",
+    "name": "FruitMemory"
   },
   "appConfigMaps": [
     {
       "app_id": "UNKNOW",
       "config_id": "81915b"
+    },
+    {
+      "app_id": "652364396",
+      "config_id": "61509e"
     }
   ],
   "configs": [
@@ -17,7 +21,31 @@
       "config_id": "81915b",
       "config_name": "Default",
       "config_remarks": "",
-      "services": []
+      "services": [
+        {
+          "service_id": "301",
+          "enable": false,
+          "param": {}
+        },
+        {
+          "service_id": "353",
+          "enable": false,
+          "param": {}
+        }
+      ]
+    },
+    {
+      "app_id": "652364396",
+      "config_id": "61509e",
+      "config_name": "Default",
+      "config_remarks": "",
+      "services": [
+        {
+          "service_id": "353",
+          "enable": false,
+          "param": {}
+        }
+      ]
     }
   ]
 }
