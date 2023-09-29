@@ -52,26 +52,23 @@ export class GameManager extends Component {
     public progress_bar: ProgressBar;
     private player_reputation: number = 50;
     private reputation_title: string[] =[
-       "Street Thug",
-       "Corner Crew",
-       "Back-Alley Enforcer",
-       "Small-Time Operator",
-       "Underworld Apprentice",
-       "Racketeer Rookie",
-       "Block Boss",
-       "Smuggler's Syndicate",
-       "Vice Kingpin",
-       "Crime Lord's Lieutenant",
-       "Enforcer Elite",
-       "Syndicate Soldier",
-       "Underboss Underling",
-       "Cartel Commander",
-       "Family Capo",
-       "Clandestine Consigliere",
-       "Heist Maestro",
-       "Operation Overlord",
-       "Crime",
+        "Fruit Stand Novice 🍎",
+        "Budding Fruit Apprentice 🌱🍇",
+        "Growing Fruit Specialist 🌳🍊",
+        "Rising Fruit Expert 📈🍓",
+        "Aspiring Fruit Master 🌟🍌",
+        "Fruit Prodigy 🌠🍍",
+        "Emerging Fruit Whiz 🌼🍊",
+        "Fruit Tycoon in Training 💼🍒",
+        "Blossoming Fruit Mogul 🌸🍋",
+        "Fruit Emperor in the Making 👑🥭",
+        "Established Fruit Maestro 🎵🍈",
+        "Fruit Overlord on the Rise 🚀🍉",
+        "Mighty Fruit Dominator 💪🍎🍇",
+        "Supreme Fruit Conqueror 🏆🍊🍓",
+        "Unstoppable Fruit Warlord ⚔️🍌🌟"
     ]
+
     @property(Label)
     public player_reputattion_label: Label;
     @property(Label)
