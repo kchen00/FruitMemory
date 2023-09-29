@@ -31,6 +31,14 @@
           "service_id": "353",
           "enable": false,
           "param": {}
+        },
+        {
+          "service_id": "278",
+          "enable": false,
+          "param": {
+            "configId": "d9fe15",
+            "plugin_version": "2.0.7_0.2.0"
+          }
         }
       ]
     },
@@ -44,6 +52,56 @@
           "service_id": "353",
           "enable": false,
           "param": {}
+        },
+        {
+          "service_id": "278",
+          "enable": true,
+          "param": {
+            "configId": "071b83",
+            "plugin_version": "2.0.7_0.2.0"
+          }
+        },
+        {
+          "service_id": "352",
+          "enable": false,
+          "param": {}
+        },
+        {
+          "service_id": "302",
+          "enable": false,
+          "param": {}
+        },
+        {
+          "service_id": "354",
+          "enable": false,
+          "param": {}
+        }
+      ]
+    }
+  ],
+  "sdkHubConfigSet": [
+    {
+      "id": "071b83",
+      "name": "HUAWEI  AppGallery Connect",
+      "platform": "3",
+      "channelID": "161221",
+      "channelName": "HUAWEI  AppGallery Connect",
+      "remarks": "HUAWEI  AppGallery Connect",
+      "plugins": [
+        {
+          "hasParam": true,
+          "pParam": {},
+          "pId": "2412",
+          "pName": "HUAWEI_HMS",
+          "packageName": "huawei-hms",
+          "pType": 30,
+          "pUseType": 26,
+          "hasLocal": true,
+          "hasUpdate": false,
+          "requireParam": true,
+          "pVersion": "2.1.2_6.3.0",
+          "isInstall": false,
+          "installProgress": true
         }
       ]
     }
