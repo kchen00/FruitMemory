@@ -51,6 +51,7 @@ export class GameManager extends Component {
     @property(ProgressBar)
     public progress_bar: ProgressBar;
     private player_reputation: number = 50;
+    private reputation_index: number = 0;
     private reputation_title: string[] =[
         "Fruit Stand Novice 🍎",
         "Budding Fruit Apprentice 🌱🍇",
@@ -127,6 +128,8 @@ export class GameManager extends Component {
 
     start() {
         this.update_score_label();
+
+        this.update_player_level_title();
         this.update_player_level_label();
         this.update_reputation_bar();
         
@@ -301,9 +304,11 @@ export class GameManager extends Component {
     }
 
     private update_player_level_title(): void {
-        let index: number = this.player_level - 1;
-        index = clamp(index, 0, this.reputation_title.length-1);
-        this.player_reputation_title_label.string = this.reputation_title[index]
+        if (this.player_level % 5 == 1) {
+            this.player_reputation_title_label.string = this.reputation_title[this.reputation_index];
+            this.reputation_index += 1;
+            this.reputation_index = clamp(this.reputation_index, 0, this.reputation_title.length-1);
+        }
         
     }
 
@@ -338,7 +343,6 @@ export class GameManager extends Component {
         this.player_reputattion_label.string = "Reputation:  " + this.player_reputation.toString();
 
         this.update_player_level_label();
-        this.update_player_level_title();
     }
     
     // increase player reputation
@@ -352,6 +356,9 @@ export class GameManager extends Component {
             this.node.getComponent(AudioSource).play();
             this.camera_node.getComponent(CameraController).apply_intensity(10, 8);
             this.level_up_confetti.getComponent(ParticleSystem2D).resetSystem();
+            
+            // update the level title when level up 
+            this.update_player_level_title();
         }
         this.update_reputation_bar();
     }
@@ -440,6 +447,7 @@ export class GameManager extends Component {
 
             //start matching
             case game_state.START_MATCHING:
+                this.increase_player_reputation(5);
                 // disable the button once clicked
                 if (this.can_stock_now) {
                     this.stock_now_button.getComponent(Button).interactable = true;
