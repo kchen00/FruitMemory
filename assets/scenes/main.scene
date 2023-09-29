@@ -1680,6 +1680,7 @@
       }
     ],
     "audio_lerp_ratio": 0.1,
+    "max_volume": 0.2,
     "_id": "e4MficCiJOf48Dt9rq0Dey"
   },
   {
@@ -1695,7 +1696,7 @@
     "_clip": null,
     "_loop": true,
     "_playOnAwake": true,
-    "_volume": 1,
+    "_volume": 0.6,
     "_id": "08/5Qc3rJJ+aODFIL65QKA"
   },
   {

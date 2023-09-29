@@ -16,7 +16,9 @@ export class BgmManager extends Component {
     public audio_lerp_ratio: number = 0.8;
 
     private bgm_index: number = 0;
-    private prepare_music_change: boolean = true;
+
+    @property(Number)
+    public max_volume: number = 0.8;
 
     start() {
         this.bgms = this.shuffleArray(this.bgms);
@@ -45,7 +47,7 @@ export class BgmManager extends Component {
 
                 // when volume in lower than 1, raise up the volume
                 if (this.audio_player.volume < 1) {
-                    this.audio_player.volume = lerp(this.audio_player.volume, 1, this.audio_lerp_ratio);
+                    this.audio_player.volume = lerp(this.audio_player.volume, this.max_volume, this.audio_lerp_ratio);
                 }
 
                 if(this.audio_player.playing == false) {
