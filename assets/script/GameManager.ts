@@ -447,7 +447,6 @@ export class GameManager extends Component {
 
             //start matching
             case game_state.START_MATCHING:
-                this.increase_player_reputation(5);
                 // disable the button once clicked
                 if (this.can_stock_now) {
                     this.stock_now_button.getComponent(Button).interactable = true;
