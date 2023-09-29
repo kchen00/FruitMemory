@@ -391,6 +391,8 @@ export class GameManager extends Component {
                 console.log(JSON.stringify(new_save.get_save_game()));
                 localStorage.setItem("save_game", JSON.stringify(new_save.get_save_game()))
 
+                this.submit_score_to_leaderboard();
+
             }
         } else {
             // if there is no save game, save the game
@@ -398,8 +400,21 @@ export class GameManager extends Component {
             let new_save: SaveGame = new SaveGame(this.player_score, this.player_level, this.player_reputation, this.player_reputation_title_label.string);
             console.log(JSON.stringify(new_save.get_save_game()));
             localStorage.setItem("save_game", JSON.stringify(new_save.get_save_game()))
+            this.submit_score_to_leaderboard();
         } 
     }
+
+    //submit score to leaderboard
+    private submit_score_to_leaderboard(): void {
+        let score_param: any = {
+            "type": "submitRankingScore",
+            "stateValue": "1",
+            "rankingId": "0912AF429BF70514608931C488DD9037539FA9E95B7DA525CD238CAA0D8C55F5",
+            "score": this.player_score.toString()
+        }
+        sdkhub.getUserPlugin().submitScore(score_param);
+    }
+    
 
 
     update(deltaTime: number) {
