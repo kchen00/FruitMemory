@@ -25,6 +25,7 @@ export class FruitCustomer extends Component {
     private available_fruit: Fruit[] = [];
     // customer aggresiveness, mofidy customer behaviour, 50% chance of increase for each sucessful order
     private customer_aggresiveness: number = 1;
+    private customer_growth_factor: number;
     
     //default values for customer behaviours
     @property(Number)
@@ -67,6 +68,7 @@ export class FruitCustomer extends Component {
         this.min_demand = this.initial_min_demand;
         this.max_demand = this.initial_max_demand;
         this.max_wait_time = this.initial_max_wait_time;
+        this.customer_growth_factor = 0.05 + Math.random() * (0.1-0.05);
         this.reset_customer(false);
     }
 
@@ -208,12 +210,18 @@ export class FruitCustomer extends Component {
     }
 
     // allow behavior modification to suit the difficulty
-    // using a*e^kt function to determine the increment
     public modify_behavior(): void {
         console.log("customer behavior updated, customer aggresiveness is now " + this.customer_aggresiveness);
-        this.min_demand = Math.round(this.initial_min_demand * Math.pow(Math.E, 0.1 * this.customer_aggresiveness));
-        this.max_demand = Math.round(this.initial_max_demand * Math.pow(Math.E, 0.1 * this.customer_aggresiveness));
-        this.max_wait_time = Math.round(this.initial_max_wait_time * Math.pow(Math.E, -0.8 * this.customer_aggresiveness));
+        // no need to calculate twice if we want them to increase the same amount
+        let demand_increase: number = Math.floor(this.initial_min_demand + this.initial_min_demand * this.customer_aggresiveness * this.customer_growth_factor)
+        this.max_wait_time -= this.initial_max_wait_time * this.customer_aggresiveness * this.customer_growth_factor * 0.5;
+        this.min_demand += demand_increase;
+        this.max_demand += demand_increase;
+        this.max_wait_time = Math.ceil(this.max_wait_time);
+        this.max_wait_time = clamp(this.max_wait_time, 20, this.initial_max_wait_time);
+        console.log("new min demand: " + this.min_demand);
+        console.log("new max demand: " + this.max_demand);
+        console.log("new max wait time: " + this.max_wait_time);
     }
 
     update(deltaTime: number) {

@@ -51,27 +51,25 @@ export class GameManager extends Component {
     @property(ProgressBar)
     public progress_bar: ProgressBar;
     private player_reputation: number = 50;
+    private reputation_index: number = 0;
     private reputation_title: string[] =[
-       "Street Thug",
-       "Corner Crew",
-       "Back-Alley Enforcer",
-       "Small-Time Operator",
-       "Underworld Apprentice",
-       "Racketeer Rookie",
-       "Block Boss",
-       "Smuggler's Syndicate",
-       "Vice Kingpin",
-       "Crime Lord's Lieutenant",
-       "Enforcer Elite",
-       "Syndicate Soldier",
-       "Underboss Underling",
-       "Cartel Commander",
-       "Family Capo",
-       "Clandestine Consigliere",
-       "Heist Maestro",
-       "Operation Overlord",
-       "Crime",
+        "Fruit Stand Novice 🍎",
+        "Budding Fruit Apprentice 🌱🍇",
+        "Growing Fruit Specialist 🌳🍊",
+        "Rising Fruit Expert 📈🍓",
+        "Aspiring Fruit Master 🌟🍌",
+        "Fruit Prodigy 🌠🍍",
+        "Emerging Fruit Whiz 🌼🍊",
+        "Fruit Tycoon in Training 💼🍒",
+        "Blossoming Fruit Mogul 🌸🍋",
+        "Fruit Emperor in the Making 👑🥭",
+        "Established Fruit Maestro 🎵🍈",
+        "Fruit Overlord on the Rise 🚀🍉",
+        "Mighty Fruit Dominator 💪🍎🍇",
+        "Supreme Fruit Conqueror 🏆🍊🍓",
+        "Unstoppable Fruit Warlord ⚔️🍌🌟"
     ]
+
     @property(Label)
     public player_reputattion_label: Label;
     @property(Label)
@@ -130,6 +128,8 @@ export class GameManager extends Component {
 
     start() {
         this.update_score_label();
+
+        this.update_player_level_title();
         this.update_player_level_label();
         this.update_reputation_bar();
         
@@ -304,9 +304,11 @@ export class GameManager extends Component {
     }
 
     private update_player_level_title(): void {
-        let index: number = this.player_level - 1;
-        index = clamp(index, 0, this.reputation_title.length-1);
-        this.player_reputation_title_label.string = this.reputation_title[index]
+        if (this.player_level % 5 == 1) {
+            this.player_reputation_title_label.string = this.reputation_title[this.reputation_index];
+            this.reputation_index += 1;
+            this.reputation_index = clamp(this.reputation_index, 0, this.reputation_title.length-1);
+        }
         
     }
 
@@ -341,7 +343,6 @@ export class GameManager extends Component {
         this.player_reputattion_label.string = "Reputation:  " + this.player_reputation.toString();
 
         this.update_player_level_label();
-        this.update_player_level_title();
     }
     
     // increase player reputation
@@ -355,6 +356,9 @@ export class GameManager extends Component {
             this.node.getComponent(AudioSource).play();
             this.camera_node.getComponent(CameraController).apply_intensity(10, 8);
             this.level_up_confetti.getComponent(ParticleSystem2D).resetSystem();
+            
+            // update the level title when level up 
+            this.update_player_level_title();
         }
         this.update_reputation_bar();
     }
