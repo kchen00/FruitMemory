@@ -13,6 +13,8 @@ export class MainMenuHighScore extends Component {
         let save_game_found: boolean = this.read_save_game();
         if (save_game_found) {
             this.node.getComponent(Label).string = "Highscore:  " + this.previous_score.toString();
+        } else {
+            this.node.getComponent(Label).string = "Highscore:  0";
         }
     }
 
