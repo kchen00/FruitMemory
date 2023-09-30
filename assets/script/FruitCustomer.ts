@@ -155,7 +155,7 @@ export class FruitCustomer extends Component {
     // reset customer
     // reet order and patience
     // clear oder when order is fullfilled or cancelled
-    private reset_customer(switch_to_idle: boolean = true): void {
+    public reset_customer(switch_to_idle: boolean = true): void {
         console.log("resetting customer")
         this.node.getComponent(UIOpacity).opacity = 0;
         this.fruit_order = [];

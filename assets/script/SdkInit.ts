@@ -3,9 +3,7 @@ const { ccclass, property } = _decorator;
 
 @ccclass('SdkInit')
 export class SdkInit extends Component {
-    //initialize the sdk to connect ti huawer hms core
-    
-    private  welcome_user: boolean = false;
+    //initialize the sdk to connect to huawer hms core
     start() {
         //initialize the service
         sdkhub.getUserPlugin().callFuncWithParam("init");
@@ -15,11 +13,17 @@ export class SdkInit extends Component {
             sdkhub.getUserPlugin().login();
         },2);
 
+        // show ads
+        this.invokeBannerAds();
 
     }
 
     update(deltaTime: number) {
 
-        
+    }
+
+    invokeBannerAds() {
+        var params = {"adType": "Banner", "adId": "testw6vs28auh3", "pos": "0", "adSize": "BANNER_SIZE_320_50"};
+        sdkhub.getAdsPlugin().showAds(params);
     }
 }
