@@ -4,6 +4,7 @@ import { FruitCard } from './FruitCard';
 import { FruitCustomer } from './FruitCustomer';
 import { CameraController } from './CameraController';
 import { SaveGame } from './SaveGame';
+import { AdPlayer } from './AdPlayer';
 
 const { ccclass, property } = _decorator;
 
@@ -13,6 +14,7 @@ enum game_state {
     START_MATCHING,
     GAME_OVER,
     RESET_CARDS,
+    REVIVED,
 }
 
 
@@ -51,7 +53,6 @@ export class GameManager extends Component {
     @property(ProgressBar)
     public progress_bar: ProgressBar;
     private player_reputation: number = 50;
-    private reputation_index: number = 0;
     private reputation_title: string[] =[
         "Fruit Stand Novice 🍎",
         "Budding Fruit Apprentice 🌱🍇",
@@ -125,6 +126,10 @@ export class GameManager extends Component {
     public game_over_sound: AudioClip;
     @property(AudioClip)
     public level_up_sound: AudioClip;
+
+    private ads_available: number = 3;
+    @property(Node)
+    public watch_ad_button: Node;
 
     start() {
         this.update_score_label();
@@ -304,12 +309,9 @@ export class GameManager extends Component {
     }
 
     private update_player_level_title(): void {
-        if (this.player_level % 5 == 1) {
-            this.player_reputation_title_label.string = this.reputation_title[this.reputation_index];
-            this.reputation_index += 1;
-            this.reputation_index = clamp(this.reputation_index, 0, this.reputation_title.length-1);
-        }
-        
+        let reputation_index: number = Math.floor((this.player_level - 1) / 5);
+        reputation_index = clamp(reputation_index, 0, this.reputation_title.length-1);
+        this.player_reputation_title_label.string = this.reputation_title[reputation_index];        
     }
 
     public increase_player_score(amount: number): void {
@@ -339,7 +341,12 @@ export class GameManager extends Component {
         console.log("reputation bar updated");
         // mod the player level so that it is in between 0 and max level
         let wrapped_progress: number = this.player_reputation%this.level_max_reputation
-        this.progress_bar.progress = wrapped_progress/this.level_max_reputation;
+        if(wrapped_progress == 0 && this.player_reputation != 0){
+            this.progress_bar.progress = 1.0;
+        } else {
+            this.progress_bar.progress = wrapped_progress/this.level_max_reputation;
+
+        }
         this.player_reputattion_label.string = "Reputation:  " + this.player_reputation.toString();
 
         this.update_player_level_label();
@@ -368,9 +375,10 @@ export class GameManager extends Component {
         console.log("reputation decreased");
         this.player_reputation -= amount;
         if (this.player_reputation <= this.level_max_reputation * (this.player_level - 1)) {
+            this.player_level -= 1;
             console.log("game over");
+            this.update_reputation_bar();
             this.current_game_state = game_state.GAME_OVER;
-            return;
         }
         this.update_reputation_bar();
     }
@@ -395,8 +403,6 @@ export class GameManager extends Component {
                 console.log(JSON.stringify(new_save.get_save_game()));
                 localStorage.setItem("save_game", JSON.stringify(new_save.get_save_game()))
 
-                this.submit_score_to_leaderboard();
-
             }
         } else {
             // if there is no save game, save the game
@@ -404,22 +410,12 @@ export class GameManager extends Component {
             let new_save: SaveGame = new SaveGame(this.player_score, this.player_level, this.player_reputation, this.player_reputation_title_label.string);
             console.log(JSON.stringify(new_save.get_save_game()));
             localStorage.setItem("save_game", JSON.stringify(new_save.get_save_game()))
-            this.submit_score_to_leaderboard();
         } 
     }
-
-    //submit score to leaderboard
-    private submit_score_to_leaderboard(): void {
-        let score_param: any = {
-            "type": "submitRankingScore",
-            "stateValue": "1",
-            "rankingId": "0912AF429BF70514608931C488DD9037539FA9E95B7DA525CD238CAA0D8C55F5",
-            "score": this.player_score.toString()
-        }
-        sdkhub.getUserPlugin().submitScore(score_param);
+   
+    public revive(): void {
+        this.current_game_state = game_state.REVIVED;
     }
-    
-
 
     update(deltaTime: number) {
         switch(this.current_game_state) {
@@ -501,7 +497,7 @@ export class GameManager extends Component {
 
                     this.game_over_particle.children.forEach(child => {
                         child.getComponent(ParticleSystem2D).resetSystem();
-                    })
+                    });
 
                     // play game over voice over
                     this.game_over_node.getComponent(AudioSource).play();
@@ -509,11 +505,36 @@ export class GameManager extends Component {
                     this.node.getComponent(AudioSource).clip = this.game_over_sound;
                     this.node.getComponent(AudioSource).play();
                     
-                    this.save_game();
-
+                    let watch_ad_button_label: Node = this.watch_ad_button.getChildByName("Label");
+                    // check if player still had chance to watch ad and revive
+                    // only allow player to wact ad if player level is more than 1
+                    if (this.ads_available >= 1 && this.player_level >= 1){
+                        watch_ad_button_label.getComponent(Label).string = "Revive";
+                        this.watch_ad_button.getComponent(AdPlayer).invokepreloadrewardAds();
+                    } else {
+                        watch_ad_button_label.getComponent(Label).string = "play again";
+                        this.watch_ad_button.getComponent(AdPlayer).can_play_ad = false;
+                        this.save_game();
+                    }
                     this.game_over_screen_displayed = true;
+
                 }
                 break;
+            
+            case game_state.REVIVED:
+                this.ads_available -= 1
+                this.game_over_node.setPosition(new Vec3(0, -733, 1));
+                this.game_over_particle.children.forEach(child => {
+                    child.getComponent(ParticleSystem2D).stopSystem();
+                })
+                this.update_player_level_title();
+                this.update_player_level_label();
+                this.update_reputation_bar();
+                this.customer_node.getComponent(FruitCustomer).reset_customer(false);
+                this.game_over_screen_displayed = false;
+                this.current_game_state = game_state.RESET_CARDS;
+                break;
+
 
             
 
