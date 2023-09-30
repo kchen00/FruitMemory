@@ -398,6 +398,7 @@ export class GameManager extends Component {
             // else no need to save
             if (this.player_score > previous_score) {
                 console.log("New highscore!");
+                this.game_over_score_label.getComponent(Label).string = this.player_score.toString + " New highscore!"
                 // create a new save game object
                 let new_save: SaveGame = new SaveGame(this.player_score, this.player_level, this.player_reputation, this.player_reputation_title_label.string);
                 console.log(JSON.stringify(new_save.get_save_game()));
@@ -410,6 +411,7 @@ export class GameManager extends Component {
             let new_save: SaveGame = new SaveGame(this.player_score, this.player_level, this.player_reputation, this.player_reputation_title_label.string);
             console.log(JSON.stringify(new_save.get_save_game()));
             localStorage.setItem("save_game", JSON.stringify(new_save.get_save_game()))
+            this.game_over_score_label.getComponent(Label).string = this.player_score.toString + " New highscore!"
         } 
     }
    
