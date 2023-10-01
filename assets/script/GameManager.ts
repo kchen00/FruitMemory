@@ -341,7 +341,7 @@ export class GameManager extends Component {
         console.log("reputation bar updated");
         // mod the player level so that it is in between 0 and max level
         let wrapped_progress: number = this.player_reputation%this.level_max_reputation
-        if(wrapped_progress == 0 && this.player_reputation != 0){
+        if(wrapped_progress == 0 && this.player_reputation == this.level_max_reputation*this.player_level){
             this.progress_bar.progress = 1.0;
         } else {
             this.progress_bar.progress = wrapped_progress/this.level_max_reputation;
@@ -512,7 +512,7 @@ export class GameManager extends Component {
                     // only allow player to wact ad if player level is more than 1
                     if (this.ads_available >= 1 && this.player_level >= 1){
                         watch_ad_button_label.getComponent(Label).string = "Revive";
-                        this.watch_ad_button.getComponent(AdPlayer).invokepreloadrewardAds();
+                        // this.watch_ad_button.getComponent(AdPlayer).invokepreloadrewardAds();
                     } else {
                         watch_ad_button_label.getComponent(Label).string = "play again";
                         this.watch_ad_button.getComponent(AdPlayer).can_play_ad = false;
