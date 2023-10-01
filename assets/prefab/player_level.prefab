@@ -184,8 +184,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 106.6796875,
-      "height": 50.4
+      "width": 106.66632281945374,
+      "height": 50.400000000000006
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -223,7 +223,7 @@
     "_string": "Fruit Master",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 20,
+    "_actualFontSize": 20.6425702811245,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -290,7 +290,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -2.6999999999999993,
+      "y": -2.700000000000003,
       "z": 0
     },
     "_lrot": {
@@ -488,7 +488,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 57.8125,
+      "width": 57.80524833471395,
       "height": 90.39999999999999
     },
     "_anchorPoint": {
@@ -527,7 +527,7 @@
     "_string": "level 2\n",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 20,
+    "_actualFontSize": 20.6425702811245,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -574,7 +574,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 360,
+      "width": 340,
       "height": 50
     },
     "_anchorPoint": {
@@ -635,8 +635,6 @@
       "__id__": 0
     },
     "fileId": "272uuzGBVJSIirJUUT8ztv",
-    "instance": null,
-    "targetOverrides": null,
     "nestedPrefabInstanceRoots": null
   },
   {
@@ -1069,8 +1067,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 124.541015625,
-      "height": 50.4
+      "width": 124.5253985809445,
+      "height": 50.400000000000006
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1108,7 +1106,7 @@
     "_string": "Score 123123",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
-    "_actualFontSize": 20,
+    "_actualFontSize": 20.6425702811245,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -1205,8 +1203,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 169.033203125,
-      "height": 50.4
+      "width": 169.012003620311,
+      "height": 50.400000000000006
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1244,7 +1242,7 @@
     "_string": "Reputation 123123",
     "_horizontalAlign": 2,
     "_verticalAlign": 1,
-    "_actualFontSize": 20,
+    "_actualFontSize": 20.6425702811245,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
