@@ -512,7 +512,7 @@ export class GameManager extends Component {
                     // only allow player to wact ad if player level is more than 1
                     if (this.ads_available >= 1 && this.player_level >= 1){
                         watch_ad_button_label.getComponent(Label).string = "Revive";
-                        // this.watch_ad_button.getComponent(AdPlayer).invokepreloadrewardAds();
+                        this.watch_ad_button.getComponent(AdPlayer).invokepreloadrewardAds();
                     } else {
                         watch_ad_button_label.getComponent(Label).string = "play again";
                         this.watch_ad_button.getComponent(AdPlayer).can_play_ad = false;
